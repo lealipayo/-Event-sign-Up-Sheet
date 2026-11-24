@@ -617,6 +617,282 @@
       if (duplicate) {
         msg.textContent = "Member ID is already registered for this event.";
         return;
+ ions</th>
+                </tr>
+              </thead>
+              <tbody id="rosterTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <section class="bottom-summary" aria-label="Live Event Summary">
+      <div class="summary-header">
+        <h2>Live Event Overview</h2>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card events">
+          <div>
+            <div class="stat-label">Active Events</div>
+            <div id="activeEventsCount" class="stat-value">0</div>
+            <div class="stat-sub">Open for registration</div>
+          </div>
+          <div class="stat-icon" aria-hidden="true">📅</div>
+        </div>
+
+        <div class="stat-card signups">
+          <div>
+            <div class="stat-label">Total Sign-Ups</div>
+            <div id="totalSignUpsCount" class="stat-value">0</div>
+            <div class="stat-sub">Registered attendees</div>
+          </div>
+          <div class="stat-icon" aria-hidden="true">👥</div>
+        </div>
+
+        <div class="stat-card checkin">
+          <div>
+            <div class="stat-label">Checked In</div>
+            <div id="checkedInCount" class="stat-value">0</div>
+            <div id="checkInRateText" class="stat-sub">0% attendance rate</div>
+          </div>
+          <div class="stat-icon" aria-hidden="true">✅</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "org_event_signup_v1";
+
+    const initialData = {
+      events: [
+        {
+          id: "evt-1",
+          title: "Org Orientation & Kickoff",
+          dateTime: "2026-12-05T09:00",
+          venue: "Main Hall",
+          capacity: 30,
+          description: "Welcome session for members and volunteers.",
+          active: true
+        }
+      ],
+      signUps: [
+        {
+          id: "su-1",
+          eventId: "evt-1",
+          name: "Maria Santos",
+          memberId: "2024-0101",
+          contact: "maria@example.com",
+          role: "Committee",
+          checkedIn: true
+        },
+        {
+          id: "su-2",
+          eventId: "evt-1",
+          name: "Jose Reyes",
+          memberId: "2024-0102",
+          contact: "09171234567",
+          role: "Participant",
+          checkedIn: false
+        }
+      ]
+    };
+
+    let state = loadState();
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return JSON.parse(JSON.stringify(initialData));
+        const parsed = JSON.parse(raw);
+        return {
+          events: Array.isArray(parsed.events) ? parsed.events : [],
+          signUps: Array.isArray(parsed.signUps) ? parsed.signUps : []
+        };
+      } catch (err) {
+        return JSON.parse(JSON.stringify(initialData));
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement("div");
+      div.textContent = String(str ?? "");
+      return div.innerHTML;
+    }
+
+    function renderAll() {
+      const activeEvents = state.events.filter(function (e) { return e.active; });
+      const activeEventIds = new Set(activeEvents.map(function (e) { return e.id; }));
+      const activeSignUps = state.signUps.filter(function (s) { return activeEventIds.has(s.eventId); });
+      const checkedInTotal = activeSignUps.filter(function (s) { return s.checkedIn; }).length;
+      const rate = activeSignUps.length
+        ? Math.round((checkedInTotal / activeSignUps.length) * 100)
+        : 0;
+
+      document.getElementById("activeEventsCount").textContent = String(activeEvents.length);
+      document.getElementById("totalSignUpsCount").textContent = String(activeSignUps.length);
+      document.getElementById("checkedInCount").textContent = String(checkedInTotal);
+      document.getElementById("checkInRateText").textContent = rate + "% attendance rate";
+
+      renderEventSelects();
+      renderEventsList();
+      renderRoster();
+      saveState();
+    }
+
+    function renderEventSelects() {
+      const signUpSelect = document.getElementById("signUpEventSelect");
+      const filterSelect = document.getElementById("rosterEventFilter");
+      const previousFilter = filterSelect.value;
+
+      const activeEvents = state.events.filter(function (e) { return e.active; });
+
+      if (activeEvents.length === 0) {
+        signUpSelect.innerHTML = '<option value="">No active events available</option>';
+        signUpSelect.disabled = true;
+      } else {
+        signUpSelect.disabled = false;
+        signUpSelect.innerHTML = activeEvents
+          .map(function (e) {
+            const count = state.signUps.filter(function (s) { return s.eventId === e.id; }).length;
+            return '<option value="' + escapeHtml(e.id) + '">' + escapeHtml(e.title) + ' (' + count + '/' + e.capacity + ')</option>';
+          })
+          .join("");
+      }
+
+      filterSelect.innerHTML =
+        '<option value="ALL">All Events</option>' +
+        state.events
+          .map(function (e) {
+            return '<option value="' + escapeHtml(e.id) + '">' + escapeHtml(e.title) + '</option>';
+          })
+          .join("");
+
+      if (Array.from(filterSelect.options).some(function (opt) { return opt.value === previousFilter; })) {
+        filterSelect.value = previousFilter;
+      }
+    }
+
+    function renderEventsList() {
+      const listEl = document.getElementById("eventsList");
+      if (state.events.length === 0) {
+        listEl.innerHTML = '<p class="event-meta">No events published yet.</p>';
+        return;
+      }
+
+      listEl.innerHTML = state.events
+        .map(function (evt) {
+          const count = state.signUps.filter(function (s) { return s.eventId === evt.id; }).length;
+          const label = evt.active ? "Close Event" : "Reopen";
+          return (
+            '<div class="event-item">' +
+              '<div>' +
+                '<strong>' + escapeHtml(evt.title) + '</strong>' +
+                '<div class="event-meta">' +
+                  escapeHtml(evt.dateTime.replace("T", " ")) + ' · ' + escapeHtml(evt.venue) + ' · Slots: ' + count + '/' + evt.capacity +
+                '</div>' +
+              '</div>' +
+              '<button type="button" class="btn-secondary btn-sm" data-toggle-event="' + escapeHtml(evt.id) + '">' +
+                label +
+              '</button>' +
+            '</div>'
+          );
+        })
+        .join("");
+    }
+
+    function renderRoster() {
+      const filterVal = document.getElementById("rosterEventFilter").value;
+      const tbody = document.getElementById("rosterTableBody");
+
+      const rows = state.signUps.filter(function (s) {
+        return filterVal === "ALL" ? true : s.eventId === filterVal;
+      });
+
+      if (rows.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="event-meta">No sign-ups found.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = rows
+        .map(function (s) {
+          const badgeClass = s.checkedIn ? "badge-in" : "badge-out";
+          const statusText = s.checkedIn ? "Checked In" : "Not Checked In";
+          const btnText = s.checkedIn ? "Undo Check-In" : "Check In";
+          return (
+            '<tr>' +
+              '<td>' + escapeHtml(s.name) + '</td>' +
+              '<td>' + escapeHtml(s.memberId) + '</td>' +
+              '<td>' + escapeHtml(s.role) + '</td>' +
+              '<td><span class="badge ' + badgeClass + '">' + statusText + '</span></td>' +
+              '<td><button type="button" class="btn-primary btn-sm" data-checkin-id="' + escapeHtml(s.id) + '">' + btnText + '</button></td>' +
+            '</tr>'
+          );
+        })
+        .join("");
+    }
+
+    document.getElementById("createEventForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const title = document.getElementById("eventTitle").value.trim();
+      const dateTime = document.getElementById("eventDateTime").value;
+      const venue = document.getElementById("eventVenue").value.trim();
+      const capacity = Number(document.getElementById("eventCapacity").value);
+      const description = document.getElementById("eventDescription").value.trim();
+      const msg = document.getElementById("eventFormMsg");
+
+      if (!title || !dateTime || !venue || !Number.isFinite(capacity) || capacity === 0) {
+        msg.textContent = "Please complete all required fields with valid values.";
+        return;
+      }
+
+      state.events.unshift({
+        id: "evt-" + Date.now(),
+        title: title,
+        dateTime: dateTime,
+        venue: venue,
+        capacity: capacity,
+        description: description,
+        active: true
+      });
+
+      e.target.reset();
+      msg.textContent = "Event published!";
+      renderAll();
+    });
+
+    document.getElementById("signUpForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const eventId = document.getElementById("signUpEventSelect").value;
+      const name = document.getElementById("memberName").value.trim();
+      const memberId = document.getElementById("memberId").value.trim();
+      const contact = document.getElementById("memberContact").value.trim();
+      const role = document.getElementById("memberRole").value;
+      const msg = document.getElementById("signUpMsg");
+
+      const evt = state.events.find(function (item) { return item.id === eventId && item.active; });
+      if (!evt) {
+        msg.textContent = "Select an active event first.";
+        return;
+      }
+
+      const eventSignUps = state.signUps.filter(function (s) { return s.eventId === eventId; });
+      if (eventSignUps.length >= evt.capacity) {
+        msg.textContent = "Event is already at maximum capacity.";
+        return;
+      }
+
+      const duplicate = eventSignUps.some(function (s) {
+        return s.memberId.toLowerCase() === memberId.toLowerCase();
+      });
+      if (duplicate) {
+        msg.textContent = "Member ID is already registered for this event.";
+        return;
  Checked In</div>
           <div class="value" id="statCheckedIn">0</div>
         </div>
