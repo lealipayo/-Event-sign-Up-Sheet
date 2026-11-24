@@ -1,1 +1,1 @@
-# -Event-sign-Up-Sheet
+# Medina College Ipil, Incorporated — Campus Information & Alert Center
