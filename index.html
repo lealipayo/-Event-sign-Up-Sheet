@@ -3,327 +3,621 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Org Event Sign-Up Sheet App (v0.1.0)</title>
+  <title>Org Event Sign-Up Sheet</title>
   <style>
     :root {
-      --primary: #2563eb;
-      --primary-hover: #1d4ed8;
-      --bg: #f8fafc;
-      --surface: #ffffff;
-      --text: #0f172a;
+      --bg: #f3f6fb;
+      --card: #ffffff;
+      --text: #161e2e;
       --muted: #64748b;
       --border: #e2e8f0;
-      --success: #16a34a;
-      --success-bg: #dcfce7;
-      --warning: #d97706;
-      --warning-bg: #fef3c7;
-      --danger: #dc2626;
-      --danger-bg: #fee2e2;
-      --radius: 10px;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --success: #10b981;
+      --success-bg: #ecfdf5;
+      --success-text: #047857;
+      --amber: #f59e0b;
+      --warn-bg: #fffbeb;
+      --warn-text: #b45309;
+      --shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.5;
     }
 
-    header {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 1rem 1.5rem;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-
-    .header-inner {
+    .container {
       max-width: 1120px;
       margin: 0 auto;
+      padding: 28px 18px 56px;
+    }
+
+    header {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      gap: 1rem;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
     }
 
-    .brand h1 { font-size: 1.25rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }
-    .badge-version {
-      font-size: 0.75rem;
-      background: #eff6ff;
-      color: var(--primary);
-      padding: 0.15rem 0.5rem;
-      border-radius: 999px;
-      font-weight: 600;
-    }
-    .brand p { font-size: 0.85rem; color: var(--muted); }
+    h1 { font-size: 1.55rem; margin: 0; }
+    h2, h3 { margin: 0 0 14px; font-size: 1.1rem; }
 
-    .container {
-      max-width: 1120px;
-      margin: 1.5rem auto;
-      padding: 0 1.5rem 3rem;
+    .subtitle { color: var(--muted); font-size: 0.9rem; margin: 4px 0 0; }
+
+    .main-grid {
       display: grid;
-      grid-template-columns: 340px 1fr;
-      gap: 1.5rem;
+      grid-template-columns: 1fr 1.25fr;
+      gap: 20px;
       align-items: start;
     }
 
     @media (max-width: 860px) {
-      .container { grid-template-columns: 1fr; }
+      .main-grid { grid-template-columns: 1fr; }
     }
 
     .card {
-      background: var(--surface);
+      background: var(--card);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.25rem;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
     }
 
-    .card h2 { font-size: 1.05rem; margin-bottom: 0.85rem; }
+    .field { margin-bottom: 13px; }
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #334155;
+    }
 
-    .form-group { margin-bottom: 0.85rem; }
-    label { display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.3rem; color: #334155; }
     input, select, textarea {
       width: 100%;
-      padding: 0.55rem 0.75rem;
+      padding: 9px 12px;
       border: 1px solid var(--border);
-      border-radius: 7px;
-      font-size: 0.9rem;
+      border-radius: 8px;
+      font-size: 0.93rem;
       font-family: inherit;
       background: #fff;
     }
+
     input:focus, select:focus, textarea:focus {
       outline: none;
       border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
     }
 
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.4rem;
-      padding: 0.55rem 0.95rem;
-      font-size: 0.875rem;
-      font-weight: 600;
-      border-radius: 7px;
-      border: 1px solid transparent;
+    button {
       cursor: pointer;
-      transition: background 0.15s, opacity 0.15s;
-    }
-    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    .btn-primary { background: var(--primary); color: #fff; }
-    .btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
-    .btn-outline { background: #fff; border-color: var(--border); color: var(--text); }
-    .btn-outline:hover:not(:disabled) { background: #f1f5f9; }
-    .btn-success { background: var(--success); color: #fff; }
-    .btn-danger-text { background: transparent; color: var(--danger); padding: 0.3rem 0.5rem; font-size: 0.8rem; }
-    .btn-danger-text:hover { background: var(--danger-bg); }
-    .btn-full { width: 100%; }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.85rem;
-      margin-bottom: 1.25rem;
-    }
-    .stat-box {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 0.9rem 1rem;
-    }
-    .stat-box .label { font-size: 0.78rem; color: var(--muted); font-weight: 600; text-transform: uppercase; }
-    .stat-box .value { font-size: 1.5rem; font-weight: 700; margin-top: 0.15rem; }
-
-    .events-list { display: grid; gap: 1rem; }
-    .event-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.15rem;
-      transition: border-color 0.15s;
-    }
-    .event-card.active-roster { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1); }
-    .event-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 0.75rem;
-      margin-bottom: 0.4rem;
-    }
-    .event-title { font-size: 1.05rem; font-weight: 700; }
-    .event-meta { font-size: 0.83rem; color: var(--muted); margin-bottom: 0.65rem; }
-    .event-desc { font-size: 0.88rem; color: #334155; margin-bottom: 0.85rem; }
-
-    .status-pill {
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 0.2rem 0.6rem;
-      border-radius: 999px;
-      white-space: nowrap;
-    }
-    .pill-open { background: var(--success-bg); color: var(--success); }
-    .pill-full { background: var(--danger-bg); color: var(--danger); }
-
-    .capacity-row { margin-bottom: 0.9rem; }
-    .capacity-labels {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.8rem;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      padding: 9px 15px;
+      font-size: 0.9rem;
       font-weight: 600;
-      margin-bottom: 0.3rem;
     }
-    .progress-track {
-      height: 8px;
-      background: #e2e8f0;
+
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-hover); }
+
+    .btn-secondary { background: #f8fafc; color: var(--text); border-color: var(--border); }
+    .btn-secondary:hover { background: #eef2f6; }
+
+    .btn-sm { padding: 6px 11px; font-size: 0.82rem; }
+
+    .event-item {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 13px 14px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      background: #fafcff;
+    }
+
+    .event-meta { font-size: 0.84rem; color: var(--muted); margin-top: 2px; }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 9px;
       border-radius: 999px;
-      overflow: hidden;
+      font-size: 0.76rem;
+      font-weight: 600;
     }
-    .progress-fill {
-      height: 100%;
-      background: var(--primary);
-      transition: width 0.25s ease;
+
+    .badge-in { background: var(--success-bg); color: var(--success-text); }
+    .badge-out { background: var(--warn-bg); color: var(--warn-text); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
     }
-    .progress-fill.full { background: var(--danger); }
 
-    .event-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    th {
+      text-align: left;
+      padding: 10px 8px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
 
-    .roster-section { margin-top: 1.5rem; }
-    .roster-header {
+    td {
+      text-align: left;
+      padding: 11px 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .toolbar {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      gap: 0.75rem;
-      margin-bottom: 0.85rem;
+      gap: 10px;
+      margin-bottom: 14px;
     }
-    .roster-controls { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-    .roster-controls input { width: 210px; }
 
-    table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
-    th, td { text-align: left; padding: 0.65rem 0.6rem; border-bottom: 1px solid var(--border); }
-    th { font-size: 0.78rem; text-transform: uppercase; color: var(--muted); background: #f8fafc; }
+    .message {
+      margin-top: 10px;
+      font-size: 0.86rem;
+      font-weight: 500;
+      color: var(--primary);
+      min-height: 1.2em;
+    }
 
-    .checkin-badge {
-      display: inline-block;
-      padding: 0.18rem 0.55rem;
-      border-radius: 999px;
-      font-size: 0.75rem;
-      font-weight: 600;
+    .bottom-summary {
+      margin-top: 12px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
     }
-    .badge-checked { background: var(--success-bg); color: var(--success); }
-    .badge-registered { background: var(--warning-bg); color: var(--warning); }
 
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.45);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-      z-index: 50;
+    .summary-header h2 {
+      margin: 0 0 14px;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
     }
-    .modal-backdrop.open { display: flex; }
-    .modal {
-      background: var(--surface);
-      border-radius: var(--radius);
-      max-width: 440px;
-      width: 100%;
-      padding: 1.35rem;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
     }
-    .modal-header {
+
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 20px;
+      box-shadow: var(--shadow);
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 0.9rem;
-    }
-    .close-btn {
-      background: none;
-      border: none;
-      font-size: 1.35rem;
-      cursor: pointer;
-      color: var(--muted);
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
     }
 
-    .alert {
-      padding: 0.6rem 0.8rem;
-      border-radius: 7px;
-      font-size: 0.83rem;
-      margin-bottom: 0.85rem;
-      display: none;
+    .stat-card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 5px;
     }
-    .alert.error { display: block; background: var(--danger-bg); color: var(--danger); }
-    .alert.success { display: block; background: var(--success-bg); color: var(--success); }
 
-    .empty-state {
-      text-align: center;
-      padding: 2rem 1rem;
-      color: var(--muted);
-      font-size: 0.9rem;
+    .stat-card.events::before { background: var(--primary); }
+    .stat-card.signups::before { background: var(--amber); }
+    .stat-card.checkin::before { background: var(--success); }
+
+    .stat-label { font-size: 0.85rem; font-weight: 600; color: var(--muted); }
+    .stat-value { font-size: 2rem; font-weight: 800; margin-top: 4px; line-height: 1.1; }
+    .stat-sub { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+
+    .stat-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
     }
+
+    .stat-card.events .stat-icon { background: #eff6ff; color: var(--primary); }
+    .stat-card.signups .stat-icon { background: #fffbeb; color: var(--amber); }
+    .stat-card.checkin .stat-icon { background: #ecfdf5; color: var(--success); }
   </style>
 </head>
 <body>
-
-  <header>
-    <div class="header-inner">
-      <div class="brand">
-        <h1>Org Event Sign-Up Sheet <span class="badge-version">v0.1.0</span></h1>
-        <p>FR-01: Event Capacity Management, Self-Service Sign-Up & Live Check-In</p>
-      </div>
+  <div class="container">
+    <header>
       <div>
-        <button class="btn btn-outline" id="resetDemoBtn" title="Restore sample events">Reset Demo Data</button>
+        <h1>Org Event Sign-Up Sheet</h1>
+        <p class="subtitle">Event Capacity Management, Self-Service Sign-Up &amp; Live Check-In</p>
+      </div>
+      <button id="resetDemoBtn" class="btn-secondary" type="button">Reset Demo Data</button>
+    </header>
+
+    <div class="main-grid">
+      <div>
+        <section class="card">
+          <h2>Create Org Event</h2>
+          <form id="createEventForm">
+            <div class="field">
+              <label for="eventTitle">Event Title *</label>
+              <input id="eventTitle" type="text" required placeholder="e.g., General Assembly 2026" />
+            </div>
+            <div class="field">
+              <label for="eventDateTime">Date &amp; Time *</label>
+              <input id="eventDateTime" type="datetime-local" required />
+            </div>
+            <div class="field">
+              <label for="eventVenue">Venue *</label>
+              <input id="eventVenue" type="text" required placeholder="e.g., University Auditorium" />
+            </div>
+            <div class="field">
+              <label for="eventCapacity">Maximum Slots (Capacity Cap) *</label>
+              <input id="eventCapacity" type="number" min="1" required placeholder="e.g., 50" />
+            </div>
+            <div class="field">
+              <label for="eventDescription">Description</label>
+              <textarea id="eventDescription" rows="2" placeholder="Optional details"></textarea>
+            </div>
+            <button type="submit" class="btn-primary">+ Publish Event</button>
+            <div id="eventFormMsg" class="message"></div>
+          </form>
+        </section>
+
+        <section class="card">
+          <h2>Published Events</h2>
+          <div id="eventsList"></div>
+        </section>
+      </div>
+
+      <div>
+        <section class="card">
+          <h3>Sign Up for Event</h3>
+          <form id="signUpForm">
+            <div class="field">
+              <label for="signUpEventSelect">Select Event *</label>
+              <select id="signUpEventSelect" required></select>
+            </div>
+            <div class="field">
+              <label for="memberName">Full Name *</label>
+              <input id="memberName" type="text" required placeholder="Juan Dela Cruz" />
+            </div>
+            <div class="field">
+              <label for="memberId">Student / Member ID * (Duplicate check enabled)</label>
+              <input id="memberId" type="text" required placeholder="2026-00123" />
+            </div>
+            <div class="field">
+              <label for="memberContact">Email or Contact</label>
+              <input id="memberContact" type="text" placeholder="juan@example.com" />
+            </div>
+            <div class="field">
+              <label for="memberRole">Participation Role *</label>
+              <select id="memberRole" required>
+                <option value="Participant">Participant</option>
+                <option value="Volunteer">Volunteer</option>
+                <option value="Committee">Committee</option>
+              </select>
+            </div>
+            <button type="submit" class="btn-primary">Confirm Sign-Up</button>
+            <div id="signUpMsg" class="message"></div>
+          </form>
+        </section>
+
+        <section class="card">
+          <div class="toolbar">
+            <h2 style="margin:0;">Event Roster</h2>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <select id="rosterEventFilter" aria-label="Filter roster by event"></select>
+              <button id="exportCsvBtn" class="btn-secondary btn-sm" type="button">Export CSV</button>
+            </div>
+          </div>
+
+          <div style="overflow-x:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Member Name</th>
+                  <th>Student / Member ID</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="rosterTableBody"></tbody>
+            </table>
+          </div>
+        </section>
       </div>
     </div>
-  </header>
 
-  <main class="container">
-    <aside class="card">
-      <h2>Create Org Event</h2>
-      <form id="createEventForm">
-        <div class="form-group">
-          <label for="eventTitle">Event Title *</label>
-          <input type="text" id="eventTitle" placeholder="e.g., General Assembly & Tech Talk" required />
-        </div>
-        <div class="form-group">
-          <label for="eventDate">Date & Time *</label>
-          <input type="datetime-local" id="eventDate" required />
-        </div>
-        <div class="form-group">
-          <label for="eventVenue">Venue *</label>
-          <input type="text" id="eventVenue" placeholder="e.g., Student Center Room 302" required />
-        </div>
-        <div class="form-group">
-          <label for="eventCapacity">Maximum Slots (Capacity Cap) *</label>
-          <input type="number" id="eventCapacity" min="1" max="500" value="25" required />
-        </div>
-        <div class="form-group">
-          <label for="eventDesc">Description</label>
-          <textarea id="eventDesc" rows="2" placeholder="Brief agenda or notes for members..."></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary btn-full">+ Publish Event</button>
-      </form>
-    </aside>
-
-    <section>
+    <section class="bottom-summary" aria-label="Live Event Summary">
+      <div class="summary-header">
+        <h2>Live Event Overview</h2>
+      </div>
       <div class="stats-grid">
-        <div class="stat-box">
-          <div class="label">Active Events</div>
-          <div class="value" id="statEvents">0</div>
+        <div class="stat-card events">
+          <div>
+            <div class="stat-label">Active Events</div>
+            <div id="activeEventsCount" class="stat-value">0</div>
+            <div class="stat-sub">Open for registration</div>
+          </div>
+          <div class="stat-icon" aria-hidden="true">📅</div>
         </div>
-        <div class="stat-box">
-          <div class="label">Total Sign-Ups</div>
-          <div class="value" id="statSignups">0</div>
+
+        <div class="stat-card signups">
+          <div>
+            <div class="stat-label">Total Sign-Ups</div>
+            <div id="totalSignUpsCount" class="stat-value">0</div>
+            <div class="stat-sub">Registered attendees</div>
+          </div>
+          <div class="stat-icon" aria-hidden="true">👥</div>
         </div>
-        <div class="stat-box">
-          <div class="label">Checked In</div>
+
+        <div class="stat-card checkin">
+          <div>
+            <div class="stat-label">Checked In</div>
+            <div id="checkedInCount" class="stat-value">0</div>
+            <div id="checkInRateText" class="stat-sub">0% attendance rate</div>
+          </div>
+          <div class="stat-icon" aria-hidden="true">✅</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "org_event_signup_v1";
+
+    const initialData = {
+      events: [
+        {
+          id: "evt-1",
+          title: "Org Orientation & Kickoff",
+          dateTime: "2026-12-05T09:00",
+          venue: "Main Hall",
+          capacity: 30,
+          description: "Welcome session for members and volunteers.",
+          active: true
+        }
+      ],
+      signUps: [
+        {
+          id: "su-1",
+          eventId: "evt-1",
+          name: "Maria Santos",
+          memberId: "2024-0101",
+          contact: "maria@example.com",
+          role: "Committee",
+          checkedIn: true
+        },
+        {
+          id: "su-2",
+          eventId: "evt-1",
+          name: "Jose Reyes",
+          memberId: "2024-0102",
+          contact: "09171234567",
+          role: "Participant",
+          checkedIn: false
+        }
+      ]
+    };
+
+    let state = loadState();
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return JSON.parse(JSON.stringify(initialData));
+        const parsed = JSON.parse(raw);
+        return {
+          events: Array.isArray(parsed.events) ? parsed.events : [],
+          signUps: Array.isArray(parsed.signUps) ? parsed.signUps : []
+        };
+      } catch (err) {
+        return JSON.parse(JSON.stringify(initialData));
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement("div");
+      div.textContent = String(str ?? "");
+      return div.innerHTML;
+    }
+
+    function renderAll() {
+      const activeEvents = state.events.filter(function (e) { return e.active; });
+      const activeEventIds = new Set(activeEvents.map(function (e) { return e.id; }));
+      const activeSignUps = state.signUps.filter(function (s) { return activeEventIds.has(s.eventId); });
+      const checkedInTotal = activeSignUps.filter(function (s) { return s.checkedIn; }).length;
+      const rate = activeSignUps.length
+        ? Math.round((checkedInTotal / activeSignUps.length) * 100)
+        : 0;
+
+      document.getElementById("activeEventsCount").textContent = String(activeEvents.length);
+      document.getElementById("totalSignUpsCount").textContent = String(activeSignUps.length);
+      document.getElementById("checkedInCount").textContent = String(checkedInTotal);
+      document.getElementById("checkInRateText").textContent = rate + "% attendance rate";
+
+      renderEventSelects();
+      renderEventsList();
+      renderRoster();
+      saveState();
+    }
+
+    function renderEventSelects() {
+      const signUpSelect = document.getElementById("signUpEventSelect");
+      const filterSelect = document.getElementById("rosterEventFilter");
+      const previousFilter = filterSelect.value;
+
+      const activeEvents = state.events.filter(function (e) { return e.active; });
+
+      if (activeEvents.length === 0) {
+        signUpSelect.innerHTML = '<option value="">No active events available</option>';
+        signUpSelect.disabled = true;
+      } else {
+        signUpSelect.disabled = false;
+        signUpSelect.innerHTML = activeEvents
+          .map(function (e) {
+            const count = state.signUps.filter(function (s) { return s.eventId === e.id; }).length;
+            return '<option value="' + escapeHtml(e.id) + '">' + escapeHtml(e.title) + ' (' + count + '/' + e.capacity + ')</option>';
+          })
+          .join("");
+      }
+
+      filterSelect.innerHTML =
+        '<option value="ALL">All Events</option>' +
+        state.events
+          .map(function (e) {
+            return '<option value="' + escapeHtml(e.id) + '">' + escapeHtml(e.title) + '</option>';
+          })
+          .join("");
+
+      if (Array.from(filterSelect.options).some(function (opt) { return opt.value === previousFilter; })) {
+        filterSelect.value = previousFilter;
+      }
+    }
+
+    function renderEventsList() {
+      const listEl = document.getElementById("eventsList");
+      if (state.events.length === 0) {
+        listEl.innerHTML = '<p class="event-meta">No events published yet.</p>';
+        return;
+      }
+
+      listEl.innerHTML = state.events
+        .map(function (evt) {
+          const count = state.signUps.filter(function (s) { return s.eventId === evt.id; }).length;
+          const label = evt.active ? "Close Event" : "Reopen";
+          return (
+            '<div class="event-item">' +
+              '<div>' +
+                '<strong>' + escapeHtml(evt.title) + '</strong>' +
+                '<div class="event-meta">' +
+                  escapeHtml(evt.dateTime.replace("T", " ")) + ' · ' + escapeHtml(evt.venue) + ' · Slots: ' + count + '/' + evt.capacity +
+                '</div>' +
+              '</div>' +
+              '<button type="button" class="btn-secondary btn-sm" data-toggle-event="' + escapeHtml(evt.id) + '">' +
+                label +
+              '</button>' +
+            '</div>'
+          );
+        })
+        .join("");
+    }
+
+    function renderRoster() {
+      const filterVal = document.getElementById("rosterEventFilter").value;
+      const tbody = document.getElementById("rosterTableBody");
+
+      const rows = state.signUps.filter(function (s) {
+        return filterVal === "ALL" ? true : s.eventId === filterVal;
+      });
+
+      if (rows.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="event-meta">No sign-ups found.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = rows
+        .map(function (s) {
+          const badgeClass = s.checkedIn ? "badge-in" : "badge-out";
+          const statusText = s.checkedIn ? "Checked In" : "Not Checked In";
+          const btnText = s.checkedIn ? "Undo Check-In" : "Check In";
+          return (
+            '<tr>' +
+              '<td>' + escapeHtml(s.name) + '</td>' +
+              '<td>' + escapeHtml(s.memberId) + '</td>' +
+              '<td>' + escapeHtml(s.role) + '</td>' +
+              '<td><span class="badge ' + badgeClass + '">' + statusText + '</span></td>' +
+              '<td><button type="button" class="btn-primary btn-sm" data-checkin-id="' + escapeHtml(s.id) + '">' + btnText + '</button></td>' +
+            '</tr>'
+          );
+        })
+        .join("");
+    }
+
+    document.getElementById("createEventForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const title = document.getElementById("eventTitle").value.trim();
+      const dateTime = document.getElementById("eventDateTime").value;
+      const venue = document.getElementById("eventVenue").value.trim();
+      const capacity = Number(document.getElementById("eventCapacity").value);
+      const description = document.getElementById("eventDescription").value.trim();
+      const msg = document.getElementById("eventFormMsg");
+
+      if (!title || !dateTime || !venue || !Number.isFinite(capacity) || capacity === 0) {
+        msg.textContent = "Please complete all required fields with valid values.";
+        return;
+      }
+
+      state.events.unshift({
+        id: "evt-" + Date.now(),
+        title: title,
+        dateTime: dateTime,
+        venue: venue,
+        capacity: capacity,
+        description: description,
+        active: true
+      });
+
+      e.target.reset();
+      msg.textContent = "Event published!";
+      renderAll();
+    });
+
+    document.getElementById("signUpForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const eventId = document.getElementById("signUpEventSelect").value;
+      const name = document.getElementById("memberName").value.trim();
+      const memberId = document.getElementById("memberId").value.trim();
+      const contact = document.getElementById("memberContact").value.trim();
+      const role = document.getElementById("memberRole").value;
+      const msg = document.getElementById("signUpMsg");
+
+      const evt = state.events.find(function (item) { return item.id === eventId && item.active; });
+      if (!evt) {
+        msg.textContent = "Select an active event first.";
+        return;
+      }
+
+      const eventSignUps = state.signUps.filter(function (s) { return s.eventId === eventId; });
+      if (eventSignUps.length >= evt.capacity) {
+        msg.textContent = "Event is already at maximum capacity.";
+        return;
+      }
+
+      const duplicate = eventSignUps.some(function (s) {
+        return s.memberId.toLowerCase() === memberId.toLowerCase();
+      });
+      if (duplicate) {
+        msg.textContent = "Member ID is already registered for this event.";
+        return;
+ Checked In</div>
           <div class="value" id="statCheckedIn">0</div>
         </div>
       </div>
