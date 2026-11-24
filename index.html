@@ -3,195 +3,650 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Org Event Sign-Up Sheet</title>
+  <title>Medina College Ipil, Incorporated — Campus Information &amp; Alert Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
+    /* Campus Green & Gold Design Tokens */
     :root {
-      --bg: #f3f6fb;
+      --mc-green: #14532d;
+      --mc-green-mid: #166534;
+      --mc-green-light: #15803d;
+      --mc-green-soft: #f0fdf4;
+      --mc-green-border: #bbf7d0;
+      --mc-gold: #d97706;
+      --mc-gold-bright: #f59e0b;
+      --mc-gold-soft: #fffbeb;
+      --mc-gold-border: #fde68a;
+      --bg: #eef2f6;
       --card: #ffffff;
-      --text: #161e2e;
-      --muted: #64748b;
-      --border: #e2e8f0;
-      --primary: #2563eb;
-      --primary-hover: #1d4ed8;
-      --success: #10b981;
-      --success-bg: #ecfdf5;
-      --success-text: #047857;
-      --amber: #f59e0b;
-      --warn-bg: #fffbeb;
-      --warn-text: #b45309;
-      --shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #cbd5e1;
+      --border-light: #e2e8f0;
+      --urgent: #b91c1c;
+      --urgent-bg: #fef2f2;
+      --urgent-border: #fca5a5;
+      --important: #b45309;
+      --important-bg: #fffbeb;
+      --important-border: #fcd34d;
+      --general: #0369a1;
+      --general-bg: #f0f9ff;
+      --general-border: #bae6fd;
+      --resolved-bg: #f1f5f9;
+      --resolved-text: #475569;
+      --radius-lg: 14px;
+      --radius-md: 10px;
+      --radius-sm: 8px;
+      --shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-      background: var(--bg);
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
       color: var(--text);
       line-height: 1.5;
+      overflow-x: hidden;
     }
 
-    .container {
-      max-width: 1120px;
+    /* Header Banner */
+    .top-header {
+      background: linear-gradient(135deg, var(--mc-green) 0%, var(--mc-green-mid) 58%, var(--mc-green-light) 100%);
+      color: #ffffff;
+      border-bottom: 4px solid var(--mc-gold-bright);
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.14);
+    }
+
+    .header-inner {
+      max-width: 1220px;
       margin: 0 auto;
-      padding: 28px 18px 56px;
-    }
-
-    header {
+      padding: 16px 20px;
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 24px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--border);
+      justify-content: space-between;
+      gap: 16px;
     }
 
-    h1 { font-size: 1.55rem; margin: 0; }
-    h2, h3 { margin: 0 0 14px; font-size: 1.1rem; }
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+      flex: 1 1 340px;
+    }
 
-    .subtitle { color: var(--muted); font-size: 0.9rem; margin: 4px 0 0; }
-
-    .main-grid {
+    .logo-badge {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 3px solid var(--mc-gold-bright);
+      padding: 2px;
       display: grid;
-      grid-template-columns: 1fr 1.25fr;
+      place-items: center;
+      flex-shrink: 0;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.24);
+    }
+
+    .logo-badge img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+    }
+
+    .logo-fallback {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: var(--mc-green);
+      display: grid;
+      place-items: center;
+    }
+
+    .campus-kicker {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #fde68a;
+    }
+
+    .header-title {
+      margin: 2px 0;
+      font-size: 1.42rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+
+    .header-subtitle {
+      margin: 0;
+      font-size: 0.85rem;
+      color: #dcfce7;
+    }
+
+    .header-right {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .live-clock-box {
+      background: rgba(255, 255, 255, 0.13);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: var(--radius-md);
+      padding: 8px 14px;
+      text-align: right;
+      min-width: 210px;
+    }
+
+    .live-date {
+      font-size: 0.77rem;
+      color: #dcfce7;
+      font-weight: 500;
+    }
+
+    .live-time {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #ffffff;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Main Container */
+    .page-container {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 22px 18px 54px;
+    }
+
+    /* Prominent Active Campus Alert Banner */
+    .active-alert-banner {
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
+      margin-bottom: 22px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .active-alert-banner.has-urgent {
+      background: var(--urgent-bg);
+      border: 1px solid var(--urgent-border);
+      border-left: 6px solid var(--urgent);
+    }
+
+    .active-alert-banner.has-active {
+      background: var(--mc-gold-soft);
+      border: 1px solid var(--mc-gold-border);
+      border-left: 6px solid var(--mc-gold-bright);
+    }
+
+    .active-alert-banner.all-clear {
+      background: var(--card);
+      border: 1px solid var(--mc-green-border);
+      border-left: 6px solid var(--mc-green);
+    }
+
+    .alert-banner-content {
+      min-width: 0;
+      flex: 1 1 360px;
+    }
+
+    .alert-banner-kicker {
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .has-urgent .alert-banner-kicker {
+      color: var(--urgent);
+    }
+
+    .has-active .alert-banner-kicker {
+      color: #92400e;
+    }
+
+    .all-clear .alert-banner-kicker {
+      color: var(--mc-green);
+    }
+
+    .alert-banner-title {
+      font-size: 1.06rem;
+      font-weight: 800;
+      color: var(--text);
+      margin: 0 0 3px;
+    }
+
+    .alert-banner-desc {
+      font-size: 0.86rem;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .alert-banner-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Two-Column Workspace */
+    .workspace-grid {
+      display: grid;
+      grid-template-columns: minmax(310px, 400px) minmax(0, 1fr);
       gap: 20px;
       align-items: start;
     }
 
-    @media (max-width: 860px) {
-      .main-grid { grid-template-columns: 1fr; }
+    @media (max-width: 940px) {
+      .workspace-grid {
+        grid-template-columns: 1fr;
+      }
+      .live-clock-box {
+        text-align: left;
+      }
     }
 
     .card {
       background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
       padding: 20px;
       margin-bottom: 20px;
       box-shadow: var(--shadow);
     }
 
-    .field { margin-bottom: 13px; }
+    .card-title {
+      margin: 0 0 14px;
+      font-size: 1.04rem;
+      font-weight: 700;
+      color: var(--mc-green);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* Composer Form */
+    .field-group {
+      margin-bottom: 13px;
+    }
+
+    .field-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    @media (max-width: 520px) {
+      .field-row-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
     label {
       display: block;
-      font-size: 0.85rem;
+      font-size: 0.83rem;
       font-weight: 600;
+      color: #1e293b;
       margin-bottom: 5px;
-      color: #334155;
     }
 
-    input, select, textarea {
+    input[type="text"],
+    input[type="search"],
+    input[type="date"],
+    select,
+    textarea {
       width: 100%;
       padding: 9px 12px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-size: 0.93rem;
-      font-family: inherit;
-      background: #fff;
-    }
-
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
-    }
-
-    button {
-      cursor: pointer;
-      border: 1px solid transparent;
-      border-radius: 8px;
-      padding: 9px 15px;
       font-size: 0.9rem;
+      font-family: inherit;
+      color: var(--text);
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 76px;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--mc-green-mid);
+      box-shadow: 0 0 0 3px rgba(22, 101, 52, 0.15);
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: #1e293b;
+      cursor: pointer;
+    }
+
+    .checkbox-row input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      accent-color: var(--mc-green);
+      cursor: pointer;
+    }
+
+    .form-status {
+      min-height: 20px;
+      font-size: 0.83rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--mc-green-mid);
+    }
+
+    .form-status.error {
+      color: var(--urgent);
+    }
+
+    /* Buttons */
+    button {
+      font-family: inherit;
+      font-size: 0.84rem;
+      font-weight: 700;
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm);
+      padding: 9px 14px;
+      cursor: pointer;
+      touch-action: manipulation;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .btn-primary {
+      background: var(--mc-green);
+      color: #ffffff;
+      width: 100%;
+    }
+
+    .btn-primary:hover {
+      background: var(--mc-green-mid);
+    }
+
+    .btn-gold {
+      background: var(--mc-gold-bright);
+      color: #0f172a;
+    }
+
+    .btn-gold:hover {
+      background: #eab308;
+    }
+
+    .btn-secondary {
+      background: #f8fafc;
+      color: var(--text);
+      border-color: var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+
+    .btn-sm {
+      padding: 6px 10px;
+      font-size: 0.78rem;
+    }
+
+    .btn-pin.active {
+      background: var(--mc-gold-soft);
+      color: #92400e;
+      border-color: var(--mc-gold-border);
+    }
+
+    .btn-resolve.active {
+      background: var(--mc-green-soft);
+      color: var(--mc-green);
+      border-color: var(--mc-green-border);
+    }
+
+    .btn-delete {
+      background: #ffffff;
+      color: var(--urgent);
+      border-color: #fecaca;
+    }
+
+    .btn-delete:hover {
+      background: var(--urgent-bg);
+    }
+
+    /* Filter Pills & Search Toolbar */
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 14px;
+    }
+
+    .filter-pill {
+      background: #f8fafc;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 13px;
+      font-size: 0.8rem;
       font-weight: 600;
     }
 
-    .btn-primary { background: var(--primary); color: #fff; }
-    .btn-primary:hover { background: var(--primary-hover); }
-
-    .btn-secondary { background: #f8fafc; color: var(--text); border-color: var(--border); }
-    .btn-secondary:hover { background: #eef2f6; }
-
-    .btn-sm { padding: 6px 11px; font-size: 0.82rem; }
-
-    .event-item {
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 13px 14px;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      background: #fafcff;
+    .filter-pill:hover {
+      border-color: var(--mc-green-mid);
+      color: var(--mc-green);
     }
 
-    .event-meta { font-size: 0.84rem; color: var(--muted); margin-top: 2px; }
+    .filter-pill.active {
+      background: var(--mc-green);
+      color: #ffffff;
+      border-color: var(--mc-green);
+    }
+
+    .search-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+      align-items: center;
+    }
+
+    .search-field-wrap {
+      flex: 1 1 220px;
+    }
+
+    /* Information & Alerts Feed */
+    .feed-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .notice-card {
+      border: 1px solid var(--border-light);
+      border-left: 4px solid var(--mc-green-mid);
+      border-radius: var(--radius-md);
+      padding: 15px 16px;
+      background: #ffffff;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .notice-card:hover {
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+    }
+
+    .notice-card.priority-urgent {
+      border-left-color: var(--urgent);
+      background: #fffafa;
+    }
+
+    .notice-card.priority-important {
+      border-left-color: var(--mc-gold-bright);
+    }
+
+    .notice-card.priority-general {
+      border-left-color: var(--general);
+    }
+
+    .notice-card.is-resolved {
+      opacity: 0.72;
+      background: #f8fafc;
+      border-left-color: #94a3b8;
+    }
+
+    .notice-top-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .badge-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+    }
 
     .badge {
       display: inline-block;
       padding: 3px 9px;
       border-radius: 999px;
-      font-size: 0.76rem;
-      font-weight: 600;
+      font-size: 0.73rem;
+      font-weight: 700;
+      white-space: nowrap;
     }
 
-    .badge-in { background: var(--success-bg); color: var(--success-text); }
-    .badge-out { background: var(--warn-bg); color: var(--warn-text); }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.9rem;
+    .badge-category {
+      background: var(--mc-green-soft);
+      color: var(--mc-green);
+      border: 1px solid var(--mc-green-border);
     }
 
-    th {
-      text-align: left;
-      padding: 10px 8px;
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--muted);
-      border-bottom: 1px solid var(--border);
+    .badge-urgent {
+      background: var(--urgent-bg);
+      color: var(--urgent);
+      border: 1px solid var(--urgent-border);
     }
 
-    td {
-      text-align: left;
-      padding: 11px 8px;
-      border-bottom: 1px solid var(--border);
+    .badge-important {
+      background: var(--important-bg);
+      color: var(--important);
+      border: 1px solid var(--important-border);
     }
 
-    .toolbar {
+    .badge-general {
+      background: var(--general-bg);
+      color: var(--general);
+      border: 1px solid var(--general-border);
+    }
+
+    .badge-pinned {
+      background: var(--mc-gold-bright);
+      color: #0f172a;
+    }
+
+    .badge-resolved {
+      background: var(--resolved-bg);
+      color: var(--resolved-text);
+    }
+
+    .notice-title {
+      margin: 0 0 6px;
+      font-size: 1.02rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .notice-details {
+      margin: 0 0 10px;
+      font-size: 0.89rem;
+      color: #334155;
+      white-space: pre-line;
+    }
+
+    .notice-footer {
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    .message {
-      margin-top: 10px;
-      font-size: 0.86rem;
-      font-weight: 500;
-      color: var(--primary);
-      min-height: 1.2em;
-    }
-
-    .bottom-summary {
-      margin-top: 12px;
-      padding-top: 24px;
-      border-top: 1px solid var(--border);
-    }
-
-    .summary-header h2 {
-      margin: 0 0 14px;
-      font-size: 1rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      padding-top: 10px;
+      border-top: 1px solid var(--border-light);
+      font-size: 0.79rem;
       color: var(--muted);
+    }
+
+    .notice-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .notice-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .empty-feed {
+      text-align: center;
+      padding: 28px 16px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-md);
+      background: #f8fafc;
+    }
+
+    /* Bottom Live Campus Info & Alert Summary */
+    .summary-section {
+      margin-top: 10px;
+      padding-top: 22px;
+      border-top: 2px solid var(--border-light);
+    }
+
+    .summary-heading {
+      margin: 0 0 14px;
+      font-size: 0.94rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--mc-green);
     }
 
     .stats-grid {
@@ -202,8 +657,8 @@
 
     .stat-card {
       background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
       padding: 18px 20px;
       box-shadow: var(--shadow);
       display: flex;
@@ -222,1112 +677,689 @@
       width: 5px;
     }
 
-    .stat-card.events::before { background: var(--primary); }
-    .stat-card.signups::before { background: var(--amber); }
-    .stat-card.checkin::before { background: var(--success); }
+    .stat-card.active-card::before { background: var(--mc-green); }
+    .stat-card.urgent-card::before { background: var(--urgent); }
+    .stat-card.total-card::before { background: var(--mc-gold-bright); }
 
-    .stat-label { font-size: 0.85rem; font-weight: 600; color: var(--muted); }
-    .stat-value { font-size: 2rem; font-weight: 800; margin-top: 4px; line-height: 1.1; }
-    .stat-sub { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+    .stat-label {
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-top: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .stat-card.active-card .stat-value { color: var(--mc-green); }
+    .stat-card.urgent-card .stat-value { color: var(--urgent); }
+    .stat-card.total-card .stat-value { color: #b45309; }
+
+    .stat-sub {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
 
     .stat-icon {
-      width: 44px;
-      height: 44px;
+      width: 46px;
+      height: 46px;
       border-radius: 12px;
       display: grid;
       place-items: center;
-      font-size: 1.25rem;
+      font-size: 1.3rem;
       flex-shrink: 0;
     }
 
-    .stat-card.events .stat-icon { background: #eff6ff; color: var(--primary); }
-    .stat-card.signups .stat-icon { background: #fffbeb; color: var(--amber); }
-    .stat-card.checkin .stat-icon { background: #ecfdf5; color: var(--success); }
+    .stat-card.active-card .stat-icon { background: var(--mc-green-soft); color: var(--mc-green); }
+    .stat-card.urgent-card .stat-icon { background: var(--urgent-bg); color: var(--urgent); }
+    .stat-card.total-card .stat-icon { background: var(--mc-gold-soft); color: var(--mc-gold); }
+
+    footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 32px;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <div>
-        <h1>Org Event Sign-Up Sheet</h1>
-        <p class="subtitle">Event Capacity Management, Self-Service Sign-Up &amp; Live Check-In</p>
-      </div>
-      <button id="resetDemoBtn" class="btn-secondary" type="button">Reset Demo Data</button>
-    </header>
-
-    <div class="main-grid">
-      <div>
-        <section class="card">
-          <h2>Create Org Event</h2>
-          <form id="createEventForm">
-            <div class="field">
-              <label for="eventTitle">Event Title *</label>
-              <input id="eventTitle" type="text" required placeholder="e.g., General Assembly 2026" />
-            </div>
-            <div class="field">
-              <label for="eventDateTime">Date &amp; Time *</label>
-              <input id="eventDateTime" type="datetime-local" required />
-            </div>
-            <div class="field">
-              <label for="eventVenue">Venue *</label>
-              <input id="eventVenue" type="text" required placeholder="e.g., University Auditorium" />
-            </div>
-            <div class="field">
-              <label for="eventCapacity">Maximum Slots (Capacity Cap) *</label>
-              <input id="eventCapacity" type="number" min="1" required placeholder="e.g., 50" />
-            </div>
-            <div class="field">
-              <label for="eventDescription">Description</label>
-              <textarea id="eventDescription" rows="2" placeholder="Optional details"></textarea>
-            </div>
-            <button type="submit" class="btn-primary">+ Publish Event</button>
-            <div id="eventFormMsg" class="message"></div>
-          </form>
-        </section>
-
-        <section class="card">
-          <h2>Published Events</h2>
-          <div id="eventsList"></div>
-        </section>
+  <!-- Campus Header Banner -->
+  <header class="top-header">
+    <div class="header-inner">
+      <div class="brand-group">
+        <div class="logo-badge" title="Medina College Ipil, Incorporated">
+          <img
+            id="mcLogoImg"
+            src="./medina-college-logo.png"
+            alt="Medina College Ipil, Incorporated Seal"
+          />
+          <div id="mcLogoFallback" class="logo-fallback" style="display:none;" aria-hidden="true">
+            <svg width="46" height="46" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="32" cy="32" r="29" stroke="#f59e0b" stroke-width="3" fill="#14532d" />
+              <text x="32" y="37" text-anchor="middle" fill="#ffffff" font-family="Inter, sans-serif" font-weight="800" font-size="20">MC</text>
+              <text x="32" y="50" text-anchor="middle" fill="#fde68a" font-family="Inter, sans-serif" font-weight="700" font-size="7.5">IPIL · 2002</text>
+            </svg>
+          </div>
+        </div>
+        <div>
+          <div class="campus-kicker">Ipil, Zamboanga Sibugay</div>
+          <h1 class="header-title">Medina College Ipil, Incorporated — Campus Information &amp; Alert Center</h1>
+          <p class="header-subtitle">Official Campus Announcements, Emergency &amp; Weather Alerts, Advisories, and Notices</p>
+        </div>
       </div>
 
-      <div>
-        <section class="card">
-          <h3>Sign Up for Event</h3>
-          <form id="signUpForm">
-            <div class="field">
-              <label for="signUpEventSelect">Select Event *</label>
-              <select id="signUpEventSelect" required></select>
-            </div>
-            <div class="field">
-              <label for="memberName">Full Name *</label>
-              <input id="memberName" type="text" required placeholder="Juan Dela Cruz" />
-            </div>
-            <div class="field">
-              <label for="memberId">Student / Member ID * (Duplicate check enabled)</label>
-              <input id="memberId" type="text" required placeholder="2026-00123" />
-            </div>
-            <div class="field">
-              <label for="memberContact">Email or Contact</label>
-              <input id="memberContact" type="text" placeholder="juan@example.com" />
-            </div>
-            <div class="field">
-              <label for="memberRole">Participation Role *</label>
-              <select id="memberRole" required>
-                <option value="Participant">Participant</option>
-                <option value="Volunteer">Volunteer</option>
-                <option value="Committee">Committee</option>
+      <div class="header-right">
+        <div class="live-clock-box" aria-live="polite">
+          <div id="liveDateText" class="live-date">Loading date...</div>
+          <div id="liveTimeText" class="live-time">--:--:-- --</div>
+        </div>
+        <button id="resetDemoBtn" type="button" class="btn-gold btn-sm">Reset Sample Advisories</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-container">
+    <!-- Prominent Active Campus Alert Banner -->
+    <section id="activeAlertBanner" class="active-alert-banner all-clear" aria-live="assertive" aria-label="Active Campus Alert Banner">
+      <div class="alert-banner-content">
+        <div id="alertBannerKicker" class="alert-banner-kicker">Campus Status</div>
+        <h2 id="alertBannerTitle" class="alert-banner-title">No Active Alerts</h2>
+        <p id="alertBannerDesc" class="alert-banner-desc">All campus advisories are currently normal or resolved.</p>
+      </div>
+      <div class="alert-banner-actions">
+        <button id="filterActiveAlertsBtn" type="button" class="btn-secondary btn-sm">View Active</button>
+        <button id="clearActiveAlertsBtn" type="button" class="btn-secondary btn-sm">Resolve Active Alerts</button>
+      </div>
+    </section>
+
+    <div class="workspace-grid">
+      <!-- Left Column: Alert & Campus Information Composer -->
+      <section class="card" aria-labelledby="composerHeading">
+        <h2 id="composerHeading" class="card-title">
+          <span>Alert &amp; Campus Information Composer</span>
+        </h2>
+
+        <form id="composerForm" novalidate>
+          <div class="field-row-2">
+            <div class="field-group">
+              <label for="categorySelect">Category *</label>
+              <select id="categorySelect" required>
+                <option value="Emergency / Weather Alert">Emergency / Weather Alert</option>
+                <option value="Class / Office Advisory">Class / Office Advisory</option>
+                <option value="Event / Org Notice">Event / Org Notice</option>
+                <option value="Health &amp; Safety">Health &amp; Safety</option>
               </select>
             </div>
-            <button type="submit" class="btn-primary">Confirm Sign-Up</button>
-            <div id="signUpMsg" class="message"></div>
-          </form>
-        </section>
 
-        <section class="card">
-          <div class="toolbar">
-            <h2 style="margin:0;">Event Roster</h2>
-            <div style="display:flex; gap:8px; align-items:center;">
-              <select id="rosterEventFilter" aria-label="Filter roster by event"></select>
-              <button id="exportCsvBtn" class="btn-secondary btn-sm" type="button">Export CSV</button>
+            <div class="field-group">
+              <label for="prioritySelect">Priority Level *</label>
+              <select id="prioritySelect" required>
+                <option value="Urgent">Urgent</option>
+                <option value="Important">Important</option>
+                <option value="General Info" selected>General Info</option</select>
             </div>
           </div>
 
-          <div style="overflow-x:auto;">
-            <table>
-              <thead>
-                <tr>
-                  <th>Member Name</th>
-                  <th>Student / Member ID</th>
-                  <th>Role</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="rosterTableBody"></tbody>
-            </table>
+          <div class="field-group">
+            <label for="titleInput">Title *</label>
+            <input id="titleInput" type="text" required placeholder="e.g., Afternoon Class Suspension in Ipil Campus" />
           </div>
-        </section>
-      </div>
+
+          <div class="field-group">
+            <label for="detailsInput">Details *</label>
+            <textarea id="detailsInput" required placeholder="Enter complete instructions, advisory details, or campus notice..."></textarea>
+          </div>
+
+          <div class="field-row-2">
+            <div class="field-group">
+              <label for="targetDeptInput">Target Department / Course</label>
+              <input id="targetDeptInput" type="text" placeholder="e.g., All Departments, BSN, BSIT" />
+            </div>
+
+            <div class="field-group">
+              <label for="expiryDateInput">Expiry / Effective Date</label>
+              <input id="expiryDateInput" type="date" />
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="checkbox-row" for="pinOnPostCheckbox">
+              <input id="pinOnPostCheckbox" type="checkbox" />
+              <span>Pin this notice to the top of the feed</span>
+            </label>
+          </div>
+
+          <div id="composerStatus" class="form-status" role="status" aria-live="polite"></div>
+
+          <button type="submit" class="btn-primary">+ Post Campus Info / Alert</button>
+        </form>
+      </section>
+
+      <!-- Right Column: Filter Pills, Search & Information/Alerts Feed -->
+      <section class="card" aria-labelledby="feedHeading">
+        <div class="card-title">
+          <span id="feedHeading">Campus Information &amp; Alerts Feed</span>
+          <span id="feedCountLabel" class="badge badge-category">0 Items</span>
+        </div>
+         <!-- Quick Filter Pills -->
+        <div id="categoryFilterPills" class="filter-pills" role="group" aria-label="Filter by category">
+          <button type="button" class="filter-pill active" data-filter="ALL">All Notices</button>
+          <button type="button" class="filter-pill" data-filter="ACTIVE">Active Only</button>
+          <button type="button" class="filter-pill" data-filter="Emergency / Weather Alert">Emergency / Weather Alert</button>
+          <button type="button" class="filter-pill" data-filter="Class / Office Advisory">Class / Office Advisory</button>
+          <button type="button" class="filter-pill" data-filter="Event / Org Notice">Event / Org Notice</button>
+          <button type="button" class="filter-pill" data-filter="Health & Safety">Health &amp; Safety</button>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-row" role="search" aria-label="Search campus information and alerts">
+          <div class="search-field-wrap">
+            <input
+              id="feedSearchInput"
+              type="search"
+              placeholder="Search title, details, department, priority, or category..."
+              aria-label="Search campus information and alerts"
+            />
+          </div>
+          <button id="searchFeedBtn" type="button" class="btn-secondary btn-sm">Search</button>
+          <button id="clearSearchFeedBtn" type="button" class="btn-secondary btn-sm">Clear</button>
+        </div>
+
+        <!-- Feed List -->
+        <div id="alertsFeedList" class="feed-list"></div>
+      </section>
     </div>
 
-    <section class="bottom-summary" aria-label="Live Event Summary">
-      <div class="summary-header">
-        <h2>Live Event Overview</h2>
-      </div>
+    <!-- Bottom Live Campus Info & Alert Summary -->
+    <section class="summary-section" aria-labelledby="summaryHeading">
+      <h2 id="summaryHeading" class="summary-heading">Medina College Ipil, Incorporated — Live Campus Info &amp; Alert Summary</h2>
       <div class="stats-grid">
-        <div class="stat-card events">
+        <div class="stat-card active-card">
           <div>
-            <div class="stat-label">Active Events</div>
-            <div id="activeEventsCount" class="stat-value">0</div>
-            <div class="stat-sub">Open for registration</div>
+            <div class="stat-label">Active Alerts</div>
+            <div id="activeAlertsCount" class="stat-value">0</div>
+            <div class="stat-sub">Unresolved active notices</div>
           </div>
-          <div class="stat-icon" aria-hidden="true">📅</div>
+          <div class="stat-icon" aria-hidden="true">🚨</div>
         </div>
 
-        <div class="stat-card signups">
+        <div class="stat-card urgent-card">
           <div>
-            <div class="stat-label">Total Sign-Ups</div>
-            <div id="totalSignUpsCount" class="stat-value">0</div>
-            <div class="stat-sub">Registered attendees</div>
+            <div class="stat-label">Urgent Notices</div>
+            <div id="urgentNoticesCount" class="stat-value">0</div>
+            <div class="stat-sub">Active high-priority alerts</div>
           </div>
-          <div class="stat-icon" aria-hidden="true">👥</div>
+          <div class="stat-icon" aria-hidden="true">⚠️</div>
         </div>
 
-        <div class="stat-card checkin">
+        <div class="stat-card total-card">
           <div>
-            <div class="stat-label">Checked In</div>
-            <div id="checkedInCount" class="stat-value">0</div>
-            <div id="checkInRateText" class="stat-sub">0% attendance rate</div>
+            <div class="stat-label">Total Advisories</div>
+            <div id="totalAdvisoriesCount" class="stat-value">0</div>
+            <div class="stat-sub">All posted campus items</div>
           </div>
-          <div class="stat-icon" aria-hidden="true">✅</div>
+          <div class="stat-icon" aria-hidden="true">📢</div>
         </div>
       </div>
     </section>
-  </div>
-
-  <script>
-    const STORAGE_KEY = "org_event_signup_v1";
-
-    const initialData = {
-      events: [
-        {
-          id: "evt-1",
-          title: "Org Orientation & Kickoff",
-          dateTime: "2026-12-05T09:00",
-          venue: "Main Hall",
-          capacity: 30,
-          description: "Welcome session for members and volunteers.",
-          active: true
-        }
-      ],
-      signUps: [
-        {
-          id: "su-1",
-          eventId: "evt-1",
-          name: "Maria Santos",
-          memberId: "2024-0101",
-          contact: "maria@example.com",
-          role: "Committee",
-          checkedIn: true
-        },
-        {
-          id: "su-2",
-          eventId: "evt-1",
-          name: "Jose Reyes",
-          memberId: "2024-0102",
-          contact: "09171234567",
-          role: "Participant",
-          checkedIn: false
-        }
-      ]
-    };
-
-    let state = loadState();
-
-    function loadState() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return JSON.parse(JSON.stringify(initialData));
-        const parsed = JSON.parse(raw);
-        return {
-          events: Array.isArray(parsed.events) ? parsed.events : [],
-          signUps: Array.isArray(parsed.signUps) ? parsed.signUps : []
-        };
-      } catch (err) {
-        return JSON.parse(JSON.stringify(initialData));
-      }
-    }
-
-    function saveState() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    }
-
-    function escapeHtml(str) {
-      const div = document.createElement("div");
-      div.textContent = String(str ?? "");
-      return div.innerHTML;
-    }
-
-    function renderAll() {
-      const activeEvents = state.events.filter(function (e) { return e.active; });
-      const activeEventIds = new Set(activeEvents.map(function (e) { return e.id; }));
-      const activeSignUps = state.signUps.filter(function (s) { return activeEventIds.has(s.eventId); });
-      const checkedInTotal = activeSignUps.filter(function (s) { return s.checkedIn; }).length;
-      const rate = activeSignUps.length
-        ? Math.round((checkedInTotal / activeSignUps.length) * 100)
-        : 0;
-
-      document.getElementById("activeEventsCount").textContent = String(activeEvents.length);
-      document.getElementById("totalSignUpsCount").textContent = String(activeSignUps.length);
-      document.getElementById("checkedInCount").textContent = String(checkedInTotal);
-      document.getElementById("checkInRateText").textContent = rate + "% attendance rate";
-
-      renderEventSelects();
-      renderEventsList();
-      renderRoster();
-      saveState();
-    }
-
-    function renderEventSelects() {
-      const signUpSelect = document.getElementById("signUpEventSelect");
-      const filterSelect = document.getElementById("rosterEventFilter");
-      const previousFilter = filterSelect.value;
-
-      const activeEvents = state.events.filter(function (e) { return e.active; });
-
-      if (activeEvents.length === 0) {
-        signUpSelect.innerHTML = '<option value="">No active events available</option>';
-        signUpSelect.disabled = true;
-      } else {
-        signUpSelect.disabled = false;
-        signUpSelect.innerHTML = activeEvents
-          .map(function (e) {
-            const count = state.signUps.filter(function (s) { return s.eventId === e.id; }).length;
-            return '<option value="' + escapeHtml(e.id) + '">' + escapeHtml(e.title) + ' (' + count + '/' + e.capacity + ')</option>';
-          })
-          .join("");
-      }
-
-      filterSelect.innerHTML =
-        '<option value="ALL">All Events</option>' +
-        state.events
-          .map(function (e) {
-            return '<option value="' + escapeHtml(e.id) + '">' + escapeHtml(e.title) + '</option>';
-          })
-          .join("");
-
-      if (Array.from(filterSelect.options).some(function (opt) { return opt.value === previousFilter; })) {
-        filterSelect.value = previousFilter;
-      }
-    }
-
-    function renderEventsList() {
-      const listEl = document.getElementById("eventsList");
-      if (state.events.length === 0) {
-        listEl.innerHTML = '<p class="event-meta">No events published yet.</p>';
-        return;
-      }
-
-      listEl.innerHTML = state.events
-        .map(function (evt) {
-          const count = state.signUps.filter(function (s) { return s.eventId === evt.id; }).length;
-          const label = evt.active ? "Close Event" : "Reopen";
-          return (
-            '<div class="event-item">' +
-              '<div>' +
-                '<strong>' + escapeHtml(evt.title) + '</strong>' +
-                '<div class="event-meta">' +
-                  escapeHtml(evt.dateTime.replace("T", " ")) + ' · ' + escapeHtml(evt.venue) + ' · Slots: ' + count + '/' + evt.capacity +
-                '</div>' +
-              '</div>' +
-              '<button type="button" class="btn-secondary btn-sm" data-toggle-event="' + escapeHtml(evt.id) + '">' +
-                label +
-              '</button>' +
-            '</div>'
-          );
-        })
-        .join("");
-    }
-
-    function renderRoster() {
-      const filterVal = document.getElementById("rosterEventFilter").value;
-      const tbody = document.getElementById("rosterTableBody");
-
-      const rows = state.signUps.filter(function (s) {
-        return filterVal === "ALL" ? true : s.eventId === filterVal;
-      });
-
-      if (rows.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" class="event-meta">No sign-ups found.</td></tr>';
-        return;
-      }
-
-      tbody.innerHTML = rows
-        .map(function (s) {
-          const badgeClass = s.checkedIn ? "badge-in" : "badge-out";
-          const statusText = s.checkedIn ? "Checked In" : "Not Checked In";
-          const btnText = s.checkedIn ? "Undo Check-In" : "Check In";
-          return (
-            '<tr>' +
-              '<td>' + escapeHtml(s.name) + '</td>' +
-              '<td>' + escapeHtml(s.memberId) + '</td>' +
-              '<td>' + escapeHtml(s.role) + '</td>' +
-              '<td><span class="badge ' + badgeClass + '">' + statusText + '</span></td>' +
-              '<td><button type="button" class="btn-primary btn-sm" data-checkin-id="' + escapeHtml(s.id) + '">' + btnText + '</button></td>' +
-            '</tr>'
-          );
-        })
-        .join("");
-    }
-
-    document.getElementById("createEventForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-      const title = document.getElementById("eventTitle").value.trim();
-      const dateTime = document.getElementById("eventDateTime").value;
-      const venue = document.getElementById("eventVenue").value.trim();
-      const capacity = Number(document.getElementById("eventCapacity").value);
-      const description = document.getElementById("eventDescription").value.trim();
-      const msg = document.getElementById("eventFormMsg");
-
-      if (!title || !dateTime || !venue || !Number.isFinite(capacity) || capacity === 0) {
-        msg.textContent = "Please complete all required fields with valid values.";
-        return;
-      }
-
-      state.events.unshift({
-        id: "evt-" + Date.now(),
-        title: title,
-        dateTime: dateTime,
-        venue: venue,
-        capacity: capacity,
-        description: description,
-        active: true
-      });
-
-      e.target.reset();
-      msg.textContent = "Event published!";
-      renderAll();
-    });
-
-    document.getElementById("signUpForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-      const eventId = document.getElementById("signUpEventSelect").value;
-      const name = document.getElementById("memberName").value.trim();
-      const memberId = document.getElementById("memberId").value.trim();
-      const contact = document.getElementById("memberContact").value.trim();
-      const role = document.getElementById("memberRole").value;
-      const msg = document.getElementById("signUpMsg");
-
-      const evt = state.events.find(function (item) { return item.id === eventId && item.active; });
-      if (!evt) {
-        msg.textContent = "Select an active event first.";
-        return;
-      }
-
-      const eventSignUps = state.signUps.filter(function (s) { return s.eventId === eventId; });
-      if (eventSignUps.length >= evt.capacity) {
-        msg.textContent = "Event is already at maximum capacity.";
-        return;
-      }
-
-      const duplicate = eventSignUps.some(function (s) {
-        return s.memberId.toLowerCase() === memberId.toLowerCase();
-      });
-      if (duplicate) {
-        msg.textContent = "Member ID is already registered for this event.";
-        return;
- ions</th>
-                </tr>
-              </thead>
-              <tbody id="rosterTableBody"></tbody>
-            </table>
-          </div>
-        </section>
-      </div>
-    </div>
-
-    <section class="bottom-summary" aria-label="Live Event Summary">
-      <div class="summary-header">
-        <h2>Live Event Overview</h2>
-      </div>
-      <div class="stats-grid">
-        <div class="stat-card events">
-          <div>
-            <div class="stat-label">Active Events</div>
-            <div id="activeEventsCount" class="stat-value">0</div>
-            <div class="stat-sub">Open for registration</div>
-          </div>
-          <div class="stat-icon" aria-hidden="true">📅</div>
-        </div>
-
-        <div class="stat-card signups">
-          <div>
-            <div class="stat-label">Total Sign-Ups</div>
-            <div id="totalSignUpsCount" class="stat-value">0</div>
-            <div class="stat-sub">Registered attendees</div>
-          </div>
-          <div class="stat-icon" aria-hidden="true">👥</div>
-        </div>
-
-        <div class="stat-card checkin">
-          <div>
-            <div class="stat-label">Checked In</div>
-            <div id="checkedInCount" class="stat-value">0</div>
-            <div id="checkInRateText" class="stat-sub">0% attendance rate</div>
-          </div>
-          <div class="stat-icon" aria-hidden="true">✅</div>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <script>
-    const STORAGE_KEY = "org_event_signup_v1";
-
-    const initialData = {
-      events: [
-        {
-          id: "evt-1",
-          title: "Org Orientation & Kickoff",
-          dateTime: "2026-12-05T09:00",
-          venue: "Main Hall",
-          capacity: 30,
-          description: "Welcome session for members and volunteers.",
-          active: true
-        }
-      ],
-      signUps: [
-        {
-          id: "su-1",
-          eventId: "evt-1",
-          name: "Maria Santos",
-          memberId: "2024-0101",
-          contact: "maria@example.com",
-          role: "Committee",
-          checkedIn: true
-        },
-        {
-          id: "su-2",
-          eventId: "evt-1",
-          name: "Jose Reyes",
-          memberId: "2024-0102",
-          contact: "09171234567",
-          role: "Participant",
-          checkedIn: false
-        }
-      ]
-    };
-
-    let state = loadState();
-
-    function loadState() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return JSON.parse(JSON.stringify(initialData));
-        const parsed = JSON.parse(raw);
-        return {
-          events: Array.isArray(parsed.events) ? parsed.events : [],
-          signUps: Array.isArray(parsed.signUps) ? parsed.signUps : []
-        };
-      } catch (err) {
-        return JSON.parse(JSON.stringify(initialData));
-      }
-    }
-
-    function saveState() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    }
-
-    function escapeHtml(str) {
-      const div = document.createElement("div");
-      div.textContent = String(str ?? "");
-      return div.innerHTML;
-    }
-
-    function renderAll() {
-      const activeEvents = state.events.filter(function (e) { return e.active; });
-      const activeEventIds = new Set(activeEvents.map(function (e) { return e.id; }));
-      const activeSignUps = state.signUps.filter(function (s) { return activeEventIds.has(s.eventId); });
-      const checkedInTotal = activeSignUps.filter(function (s) { return s.checkedIn; }).length;
-      const rate = activeSignUps.length
-        ? Math.round((checkedInTotal / activeSignUps.length) * 100)
-        : 0;
-
-      document.getElementById("activeEventsCount").textContent = String(activeEvents.length);
-      document.getElementById("totalSignUpsCount").textContent = String(activeSignUps.length);
-      document.getElementById("checkedInCount").textContent = String(checkedInTotal);
-      document.getElementById("checkInRateText").textContent = rate + "% attendance rate";
-
-      renderEventSelects();
-      renderEventsList();
-      renderRoster();
-      saveState();
-    }
-
-    function renderEventSelects() {
-      const signUpSelect = document.getElementById("signUpEventSelect");
-      const filterSelect = document.getElementById("rosterEventFilter");
-      const previousFilter = filterSelect.value;
-
-      const activeEvents = state.events.filter(function (e) { return e.active; });
-
-      if (activeEvents.length === 0) {
-        signUpSelect.innerHTML = '<option value="">No active events available</option>';
-        signUpSelect.disabled = true;
-      } else {
-        signUpSelect.disabled = false;
-        signUpSelect.innerHTML = activeEvents
-          .map(function (e) {
-            const count = state.signUps.filter(function (s) { return s.eventId === e.id; }).length;
-            return '<option value="' + escapeHtml(e.id) + '">' + escapeHtml(e.title) + ' (' + count + '/' + e.capacity + ')</option>';
-          })
-          .join("");
-      }
-
-      filterSelect.innerHTML =
-        '<option value="ALL">All Events</option>' +
-        state.events
-          .map(function (e) {
-            return '<option value="' + escapeHtml(e.id) + '">' + escapeHtml(e.title) + '</option>';
-          })
-          .join("");
-
-      if (Array.from(filterSelect.options).some(function (opt) { return opt.value === previousFilter; })) {
-        filterSelect.value = previousFilter;
-      }
-    }
-
-    function renderEventsList() {
-      const listEl = document.getElementById("eventsList");
-      if (state.events.length === 0) {
-        listEl.innerHTML = '<p class="event-meta">No events published yet.</p>';
-        return;
-      }
-
-      listEl.innerHTML = state.events
-        .map(function (evt) {
-          const count = state.signUps.filter(function (s) { return s.eventId === evt.id; }).length;
-          const label = evt.active ? "Close Event" : "Reopen";
-          return (
-            '<div class="event-item">' +
-              '<div>' +
-                '<strong>' + escapeHtml(evt.title) + '</strong>' +
-                '<div class="event-meta">' +
-                  escapeHtml(evt.dateTime.replace("T", " ")) + ' · ' + escapeHtml(evt.venue) + ' · Slots: ' + count + '/' + evt.capacity +
-                '</div>' +
-              '</div>' +
-              '<button type="button" class="btn-secondary btn-sm" data-toggle-event="' + escapeHtml(evt.id) + '">' +
-                label +
-              '</button>' +
-            '</div>'
-          );
-        })
-        .join("");
-    }
-
-    function renderRoster() {
-      const filterVal = document.getElementById("rosterEventFilter").value;
-      const tbody = document.getElementById("rosterTableBody");
-
-      const rows = state.signUps.filter(function (s) {
-        return filterVal === "ALL" ? true : s.eventId === filterVal;
-      });
-
-      if (rows.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" class="event-meta">No sign-ups found.</td></tr>';
-        return;
-      }
-
-      tbody.innerHTML = rows
-        .map(function (s) {
-          const badgeClass = s.checkedIn ? "badge-in" : "badge-out";
-          const statusText = s.checkedIn ? "Checked In" : "Not Checked In";
-          const btnText = s.checkedIn ? "Undo Check-In" : "Check In";
-          return (
-            '<tr>' +
-              '<td>' + escapeHtml(s.name) + '</td>' +
-              '<td>' + escapeHtml(s.memberId) + '</td>' +
-              '<td>' + escapeHtml(s.role) + '</td>' +
-              '<td><span class="badge ' + badgeClass + '">' + statusText + '</span></td>' +
-              '<td><button type="button" class="btn-primary btn-sm" data-checkin-id="' + escapeHtml(s.id) + '">' + btnText + '</button></td>' +
-            '</tr>'
-          );
-        })
-        .join("");
-    }
-
-    document.getElementById("createEventForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-      const title = document.getElementById("eventTitle").value.trim();
-      const dateTime = document.getElementById("eventDateTime").value;
-      const venue = document.getElementById("eventVenue").value.trim();
-      const capacity = Number(document.getElementById("eventCapacity").value);
-      const description = document.getElementById("eventDescription").value.trim();
-      const msg = document.getElementById("eventFormMsg");
-
-      if (!title || !dateTime || !venue || !Number.isFinite(capacity) || capacity === 0) {
-        msg.textContent = "Please complete all required fields with valid values.";
-        return;
-      }
-
-      state.events.unshift({
-        id: "evt-" + Date.now(),
-        title: title,
-        dateTime: dateTime,
-        venue: venue,
-        capacity: capacity,
-        description: description,
-        active: true
-      });
-
-      e.target.reset();
-      msg.textContent = "Event published!";
-      renderAll();
-    });
-
-    document.getElementById("signUpForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-      const eventId = document.getElementById("signUpEventSelect").value;
-      const name = document.getElementById("memberName").value.trim();
-      const memberId = document.getElementById("memberId").value.trim();
-      const contact = document.getElementById("memberContact").value.trim();
-      const role = document.getElementById("memberRole").value;
-      const msg = document.getElementById("signUpMsg");
-
-      const evt = state.events.find(function (item) { return item.id === eventId && item.active; });
-      if (!evt) {
-        msg.textContent = "Select an active event first.";
-        return;
-      }
-
-      const eventSignUps = state.signUps.filter(function (s) { return s.eventId === eventId; });
-      if (eventSignUps.length >= evt.capacity) {
-        msg.textContent = "Event is already at maximum capacity.";
-        return;
-      }
-
-      const duplicate = eventSignUps.some(function (s) {
-        return s.memberId.toLowerCase() === memberId.toLowerCase();
-      });
-      if (duplicate) {
-        msg.textContent = "Member ID is already registered for this event.";
-        return;
- Checked In</div>
-          <div class="value" id="statCheckedIn">0</div>
-        </div>
-      </div>
-
-      <div class="events-list" id="eventsList"></div>
-
-      <div class="card roster-section" id="rosterCard" style="display: none;">
-        <div class="roster-header">
-          <div>
-            <h2 id="rosterTitle" style="margin-bottom: 0.15rem;">Event Roster</h2>
-            <p id="rosterSubtitle" style="font-size: 0.82rem; color: var(--muted);"></p>
-          </div>
-          <div class="roster-controls">
-            <input type="text" id="rosterSearch" placeholder="Search name, ID, or role..." />
-            <button class="btn btn-outline" id="exportCsvBtn">Export CSV</button>
-          </div>
-        </div>
-        <div style="overflow-x: auto;">
-          <table>
-            <thead>
-              <tr>
-                <th>Member Name</th>
-                <th>Student / Member ID</th>
-                <th>Role</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="rosterTableBody"></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
+     <footer>
+      Medina College Ipil, Incorporated · Ipil, Zamboanga Sibugay · Campus Information &amp; Alert Center
+    </footer>
   </main>
 
-  <div class="modal-backdrop" id="signupModal">
-    <div class="modal">
-      <div class="modal-header">
-        <h3 id="modalEventTitle">Sign Up for Event</h3>
-        <button class="close-btn" id="closeModalBtn" aria-label="Close">&times;</button>
-      </div>
-      <div id="signupAlert" class="alert"></div>
-      <form id="signupForm">
-        <input type="hidden" id="signupEventId" />
-        <div class="form-group">
-          <label for="memberName">Full Name *</label>
-          <input type="text" id="memberName" placeholder="e.g., Maria Santos" required />
-        </div>
-        <div class="form-group">
-          <label for="memberId">Student / Member ID * (Duplicate check enabled)</label>
-          <input type="text" id="memberId" placeholder="e.g., 2024-10482" required />
-        </div>
-        <div class="form-group">
-          <label for="memberEmail">Email or Contact</label>
-          <input type="text" id="memberEmail" placeholder="e.g., maria.santos@school.edu" />
-        </div>
-        <div class="form-group">
-          <label for="memberRole">Participation Role *</label>
-          <select id="memberRole">
-            <option value="Participant">Participant</option>
-            <option value="Volunteer">Volunteer</option>
-            <option value="Committee">Committee</option>
-          </select>
-        </div>
-        <button type="submit" class="btn btn-primary btn-full">Confirm Sign-Up</button>
-      </form>
-    </div>
-  </div>
-
   <script>
-    const STORAGE_KEY = "org_event_signup_v010";
-    let memoryFallback = null;
+    (function () {
+      const STORAGE_KEY = "mc_ipil_info_alert_center_v1";
 
-    const DEFAULT_DATA = {
-      events: [
+      // Sample Medina College Ipil campus advisories pre-loaded on initial run
+      const initialAdvisories = [
         {
-          id: "evt-101",
-          title: "Git & GitHub Workshop for Beginners",
-          date: "2026-11-28T14:00",
-          venue: "IT Building Lab 2",
-          maxSlots: 3,
-          description: "Hands-on session covering branches, pull requests, and open-source collaboration. Capped at 3 demo slots to test full-capacity locking."
+          id: "adv-mc-1",
+          category: "Emergency / Weather Alert",
+          priority: "Urgent",
+          title: "Heavy Rainfall & Local Flood Advisory — Ipil Campus",
+          details: "Continuous heavy rain is affecting parts of Ipil, Zamboanga Sibugay. Students and personnel commuting from low-lying areas are advised to monitor official weather updates and exercise extra caution.",
+          targetDept: "All Departments & Personnel",
+          expiryDate: "2026-11-26",
+          pinned: true,
+          resolved: false,
+          postedAt: "2026-11-24 08:00 AM"
         },
         {
-          id: "evt-102",
-          title: "2nd Semester General Assembly",
-          date: "2026-12-05T09:00",
-          venue: "University Auditorium",
-          maxSlots: 40,
-          description: "Semester roadmap, committee sign-ups, and community outreach planning."
-        }
-      ],
-      registrations: [
-        {
-          id: "reg-1",
-          eventId: "evt-101",
-          memberName: "Juan Dela Cruz",
-          memberId: "2024-00112",
-          email: "juan@campus.edu",
-          role: "Participant",
-          checkedIn: true
+          id: "adv-mc-2",
+          category: "Class / Office Advisory",
+          priority: "Important",
+          title: "Registrar & Student Affairs Office Schedule Notice",
+          details: "Enrollment inquiries, ID validation, and organization clearances are processed Monday to Friday, 8:00 AM – 5:00 PM at the Administration Building.",
+          targetDept: "All Students & Org Officers",
+          expiryDate: "2026-12-04",
+          pinned: false,
+          resolved: false,
+          postedAt: "2026-11-23 02:15 PM"
         },
         {
-          id: "reg-2",
-          eventId: "evt-101",
-          memberName: "Angela Reyes",
-          memberId: "2024-00489",
-          email: "angela@campus.edu",
-          role: "Volunteer",
-          checkedIn: false
+          id: "adv-mc-3",
+          category: "Event / Org Notice",
+          priority: "General Info",
+          title: "Campus Orientation & Student Organization Fair",
+          details: "Recognized student organizations will host registration and orientation booths at the Medina College Gymnasium. Bring your MC student ID.",
+          targetDept: "BSN, BSIT, BSCS & All Colleges",
+          expiryDate: "2026-12-05",
+          pinned: false,
+          resolved: false,
+          postedAt: "2026-11-22 10:30 AM"
+        },
+        {
+          id: "adv-mc-4",
+          category: "Health & Safety",
+          priority: "General Info",
+          title: "Campus First Aid & Hydration Station Reminder",
+          details: "First aid kits and drinking water stations remain available near the gymnasium and main lobby during high-attendance campus activities.",
+          targetDept: "Campus Health & All Attendees",
+          expiryDate: "2026-12-15",
+          pinned: false,
+          resolved: true,
+          postedAt: "2026-11-20 09:00 AM"
         }
-      ]
-    };
+      ];
 
-    function cloneData(obj) {
-      return JSON.parse(JSON.stringify(obj));
-    }
+  let advisories = loadAdvisories();
+      let activeFilter = "ALL";
+      let searchTerm = "";
 
-    function loadState() {
-      try {
-        const raw = window.localStorage.getItem(STORAGE_KEY);
-        if (raw) return JSON.parse(raw);
-      } catch (e) {
-        if (memoryFallback) return cloneData(memoryFallback);
+      // Load saved advisories safely from localStorage
+      function loadAdvisories() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return JSON.parse(JSON.stringify(initialAdvisories));
+          const parsed = JSON.parse(raw);
+          if (!Array.isArray(parsed)) return JSON.parse(JSON.stringify(initialAdvisories));
+          return parsed.map(function (item, idx) {
+            return {
+              id: item.id || "adv-" + idx,
+              category: item.category || "Class / Office Advisory",
+              priority: item.priority || "General Info",
+              title: item.title || "Untitled Notice",
+              details: item.details || "",
+              targetDept: item.targetDept || "All Departments",
+              expiryDate: item.expiryDate || "",
+              pinned: Boolean(item.pinned),
+              resolved: Boolean(item.resolved),
+              postedAt: item.postedAt || ""
+            };
+          });
+        } catch (err) {
+          return JSON.parse(JSON.stringify(initialAdvisories));
+        }
       }
-      const initial = cloneData(DEFAULT_DATA);
-      saveState(initial);
-      return initial;
-    }
 
-    function saveState(nextState = state) {
-      memoryFallback = cloneData(nextState);
-      try {
-        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(nextState));
-      } catch (e) {
-        // Fallback already stored in memoryFallback
+      // Persist advisories to localStorage
+      function saveAdvisories() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(advisories));
+        } catch (err) {
+          // Ignore storage errors in restricted contexts
+        }
+            }
+      function escapeHtml(value) {
+        const div = document.createElement("div");
+        div.textContent = String(value == null ? "" : value);
+        return div.innerHTML;
       }
-    }
 
-    let state = loadState();
-    let selectedRosterEventId = (state.events[0] && state.events[0].id) || null;
+      function formatNowTimestamp() {
+        const now = new Date();
+        const y = now.getFullYear();
+        const m = String(now.getMonth() + 1).padStart(2, "0");
+        const d = String(now.getDate()).padStart(2, "0");
+        const t = now.toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true
+        });
+        return y + "-" + m + "-" + d + " " + t;
+      }
 
-    function formatDate(dateStr) {
-      if (!dateStr) return "TBA";
-      const d = new Date(dateStr);
-      if (isNaN(d.getTime())) return dateStr;
-      return d.toLocaleString(undefined, {
-        month: "short", day: "numeric", year: "numeric",
-        hour: "numeric", minute: "2-digit"
+      // Update live ticking date & time every second
+      function updateClock() {
+        const now = new Date();
+        document.getElementById("liveDateText").textContent = now.toLocaleDateString("en-PH", {
+          weekday: "short",
+          year: "numeric",
+          month: "short",
+          day: "numeric"
+        });
+        document.getElementById("liveTimeText").textContent = now.toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: true
+        });
+      }
+
+      function getPriorityBadgeClass(priority) {
+        if (priority === "Urgent") return "badge badge-urgent";
+        if (priority === "Important") return "badge badge-important";
+        return "badge badge-general";
+      }
+
+      function getPriorityCardClass(priority, resolved) {
+        const classes = ["notice-card"];
+        if (priority === "Urgent") classes.push("priority-urgent");
+        else if (priority === "Important") classes.push("priority-important");
+        else classes.push("priority-general");
+        if (resolved) classes.push("is-resolved");
+        return classes.join(" ");
+      }
+
+      // Sort pinned items first, then Urgent > Important > General Info
+      function getSortedAdvisories(list) {
+        const priorityRank = { "Urgent": 0, "Important": 1, "General Info": 2 };
+        return list.slice().sort(function (a, b) {
+          if (a.resolved !== b.resolved) return a.resolved ? 1 : -1;
+          if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
+          const rA = priorityRank[a.priority] ?? 3;
+          const rB = priorityRank[b.priority] ?? 3;
+          return rA - rB;
+        });
+      }
+
+      // Update prominent Active Campus Alert Banner
+      function renderActiveAlertBanner() {
+        const banner = document.getElementById("activeAlertBanner");
+        const kicker = document.getElementById("alertBannerKicker");
+        const titleEl = document.getElementById("alertBannerTitle");
+        const descEl = document.getElementById("alertBannerDesc");
+        const clearBtn = document.getElementById("clearActiveAlertsBtn");
+
+        const activeItems = getSortedAdvisories(
+          advisories.filter(function (a) { return !a.resolved; })
+        );
+
+        banner.classList.remove("has-urgent", "has-active", "all-clear");
+
+        if (activeItems.length === 0) {
+          banner.classList.add("all-clear");
+          kicker.textContent = "Campus Status · All Clear";
+          titleEl.textContent = "No Active Campus Alerts";
+          descEl.textContent = "All posted alerts and advisories for Medina College Ipil, Incorporated are resolved.";
+          clearBtn.disabled = true;
+          clearBtn.style.opacity = "0.55";
+          return;
+                                   }
+
+        clearBtn.disabled = false;
+        clearBtn.style.opacity = "1";
+
+        const lead = activeItems[0];
+        const urgentCount = activeItems.filter(function (a) { return a.priority === "Urgent"; }).length;
+
+        if (lead.priority === "Urgent") {
+          banner.classList.add("has-urgent");
+          kicker.textContent = "Urgent Campus Alert (" + urgentCount + " Urgent · " + activeItems.length + " Active)";
+        } else {
+          banner.classList.add("has-active");
+          kicker.textContent = "Active Campus Advisory (" + activeItems.length + " Active)";
+        }
+
+        titleEl.textContent = lead.title + " [" + lead.category + "]";
+        descEl.textContent =
+          lead.details +
+          (lead.targetDept ? " — Target: " + lead.targetDept : "") +
+          (activeItems.length > 1 ? " (+" + (activeItems.length - 1) + " more active)" : "");
+      }
+
+      // Update bottom summary counters
+      function renderSummaryStats() {
+        const activeItems = advisories.filter(function (a) { return !a.resolved; });
+        const urgentActive = activeItems.filter(function (a) { return a.priority === "Urgent"; });
+
+        document.getElementById("activeAlertsCount").textContent = String(activeItems.length);
+        document.getElementById("urgentNoticesCount").textContent = String(urgentActive.length);
+        document.getElementById("totalAdvisoriesCount").textContent = String(advisories.length);
+      }
+
+      // Filter advisories by active filter pill and search query
+      function getFilteredAdvisories() {
+        const q = searchTerm.trim().toLowerCase();
+        const filtered = advisories.filter(function (item) {
+          let matchesFilter = true;
+          if (activeFilter === "ACTIVE") {
+            matchesFilter = !item.resolved;
+          } else if (activeFilter !== "ALL") {
+            matchesFilter = item.category === activeFilter;
+          }
+
+          if (!matchesFilter) return false;
+          if (!q) return true;
+
+          return (
+            String(item.title || "").toLowerCase().includes(q) ||
+            String(item.details || "").toLowerCase().includes(q) ||
+            String(item.category || "").toLowerCase().includes(q) ||
+            String(item.priority || "").toLowerCase().includes(q) ||
+            String(item.targetDept || "").toLowerCase().includes(q)
+          );
+        });
+
+        return getSortedAdvisories(filtered);
+      }
+
+       // Render feed cards
+      function renderFeed() {
+        const feedEl = document.getElementById("alertsFeedList");
+        const countLabel = document.getElementById("feedCountLabel");
+        const items = getFilteredAdvisories();
+
+        countLabel.textContent =
+          items.length === advisories.length
+            ? advisories.length + (advisories.length === 1 ? " Item" : " Items")
+            : items.length + " of " + advisories.length + " Items";
+
+        if (items.length === 0) {
+          feedEl.innerHTML =
+            '<div class="empty-feed">No campus information or alerts match the selected filter or search.</div>';
+          return;
+        }
+
+        feedEl.innerHTML = items
+          .map(function (item) {
+            const pinText = item.pinned ? "Unpin" : "Pin";
+            const resolveText = item.resolved ? "Reopen" : "Acknowledge / Resolve";
+            return (
+              '<article class="' + getPriorityCardClass(item.priority, item.resolved) + '">' +
+                '<div class="notice-top-meta">' +
+                  '<div class="badge-group">' +
+                    '<span class="badge badge-category">' + escapeHtml(item.category) + "</span>" +
+                    '<span class="' + getPriorityBadgeClass(item.priority) + '">' + escapeHtml(item.priority) + "</span>" +
+                    (item.pinned ? '<span class="badge badge-pinned">Pinned</span>' : "") +
+                    (item.resolved ? '<span class="badge badge-resolved">Resolved</span>' : "") +
+                  "</div>" +
+                  '<span class="event-meta">' + escapeHtml(item.postedAt) + "</span>" +
+                "</div>" +
+                '<h3 class="notice-title">' + escapeHtml(item.title) + "</h3>" +
+                '<p class="notice-details">' + escapeHtml(item.details) + "</p>" +
+                '<div class="notice-footer">' +
+                  '<div class="notice-tags">' +
+                    "<span><strong>Department / Course:</strong> " + escapeHtml(item.targetDept || "All Departments") + "</span>" +
+                    (item.expiryDate
+                      ? "<span><strong>Expiry / Date:</strong> " + escapeHtml(item.expiryDate) + "</span>"
+                      : "") +
+                  "</div>" +
+                  '<div class="notice-actions">' +
+                    '<button type="button" class="btn-secondary btn-sm btn-pin ' + (item.pinned ? "active" : "") + '" data-pin-id="' + escapeHtml(item.id) + '">' + pinText + "</button>" +
+                    '<button type="button" class="btn-secondary btn-sm btn-resolve ' + (item.resolved ? "active" : "") + '" data-resolve-id="' + escapeHtml(item.id) + '">' + resolveText + "</button>" +
+                    '<button type="button" class="btn-delete btn-sm" data-delete-id="' + escapeHtml(item.id) + '">Delete</button>' +
+                  "</div>" +
+                "</div>" +
+              "</article>"
+            );
+          })
+          .join("");
+      }
+
+      function renderAll() {
+        renderActiveAlertBanner();
+        renderSummaryStats();
+        renderFeed();
+        saveAdvisories();
+      }
+
+      function setComposerStatus(text, isError) {
+        const el = document.getElementById("composerStatus");
+        el.textContent = text || "";
+        el.classList.toggle("error", Boolean(isError));
+      }
+
+      // Composer submit handler
+      document.getElementById("composerForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const category = document.getElementById("categorySelect").value;
+        const priority = document.getElementById("prioritySelect").value;
+        const title = document.getElementById("titleInput").value.trim();
+        const details = document.getElementById("detailsInput").value.trim();
+        const targetDept = document.getElementById("targetDeptInput").value.trim() || "All Departments";
+        const expiryDate = document.getElementById("expiryDateInput").value;
+        const pinned = document.getElementById("pinOnPostCheckbox").checked;
+
+        if (!title || !details) {
+          setComposerStatus("Please enter both a Title and Details for the campus notice.", true);
+          return;
+        }
+
+        const newItem = {
+          id: "adv-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6),
+          category: category,
+          priority: priority,
+          title: title,
+          details: details,
+          targetDept: targetDept,
+          expiryDate: expiryDate,
+          pinned: pinned,
+          resolved: false,
+          postedAt: formatNowTimestamp()
+        };
+
+        advisories.unshift(newItem);
+        renderAll();
+
+        document.getElementById("titleInput").value = "";
+        document.getElementById("detailsInput").value = "";
+        document.getElementById("targetDeptInput").value = "";
+        document.getElementById("expiryDateInput").value = "";
+        document.getElementById("pinOnPostCheckbox").checked = false;
+
+        setComposerStatus("Posted: " + title, false);
       });
-    }
 
-    function escapeHtml(str) {
-      return String(str)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;");
-    }
-
-    function render() {
-      const totalEvents = state.events.length;
-      const totalSignups = state.registrations.length;
-      const totalCheckedIn = state.registrations.filter(r => r.checkedIn).length;
-
-      document.getElementById("statEvents").textContent = totalEvents;
-      document.getElementById("statSignups").textContent = totalSignups;
-      document.getElementById("statCheckedIn").textContent = totalCheckedIn;
-
-      const eventsList = document.getElementById("eventsList");
-      if (state.events.length === 0) {
-        eventsList.innerHTML = '<div class="card empty-state">No events published yet. Use the form on the left to create your first org event.</div>';
-        document.getElementById("rosterCard").style.display = "none";
-        return;
-      }
-
-      eventsList.innerHTML = state.events.map(evt => {
-        const regs = state.registrations.filter(r => r.eventId === evt.id);
-        const count = regs.length;
-        const isFull = count >= evt.maxSlots;
-        const pct = Math.min(100, Math.round((count / evt.maxSlots) * 100));
-        const isSelected = evt.id === selectedRosterEventId;
-
-        return `
-          <article class="event-card ${isSelected ? "active-roster" : ""}">
-            <div class="event-top">
-              <div>
-                <div class="event-title">${escapeHtml(evt.title)}</div>
-                <div class="event-meta">${formatDate(evt.date)} &bull; ${escapeHtml(evt.venue)}</div>
-              </div>
-              <span class="status-pill ${isFull ? "pill-full" : "pill-open"}">
-                ${isFull ? "Full" : `${evt.maxSlots - count} Slots Left`}
-              </span>
-            </div>
-            ${evt.description ? `<p class="event-desc">${escapeHtml(evt.description)}</p>` : ""}
-            <div class="capacity-row">
-              <div class="capacity-labels">
-                <span>Registrations: ${count} / ${evt.maxSlots}</span>
-                <span>${pct}% Filled</span>
-              </div>
-              <div class="progress-track">
-                <div class="progress-fill ${isFull ? "full" : ""}" style="width: ${pct}%"></div>
-              </div>
-            </div>
-            <div class="event-actions">
-              <button class="btn btn-primary" onclick="openSignupModal('${evt.id}')" ${isFull ? "disabled" : ""}>
-                ${isFull ? "Event Full" : "Sign Up"}
-              </button>
-              <button class="btn btn-outline" onclick="selectRoster('${evt.id}')">
-                View Roster (${count})
-              </button>
-              <button class="btn btn-danger-text" onclick="deleteEvent('${evt.id}')">Delete</button>
-            </div>
-          </article>
-        `;
-      }).join("");
-
-      renderRoster();
-    }
-
-    function renderRoster() {
-      const rosterCard = document.getElementById("rosterCard");
-      const evt = state.events.find(e => e.id === selectedRosterEventId);
-      if (!evt) {
-        rosterCard.style.display = "none";
-        return;
-      }
-
-      rosterCard.style.display = "block";
-      const query = document.getElementById("rosterSearch").value.trim().toLowerCase();
-      const allRegs = state.registrations.filter(r => r.eventId === evt.id);
-      const checkedCount = allRegs.filter(r => r.checkedIn).length;
-
-      document.getElementById("rosterTitle").textContent = `Roster: ${evt.title}`;
-      document.getElementById("rosterSubtitle").textContent =
-        `${allRegs.length} of ${evt.maxSlots} slots filled • ${checkedCount} checked in`;
-
-      const filtered = allRegs.filter(r =>
-        r.memberName.toLowerCase().includes(query) ||
-        r.memberId.toLowerCase().includes(query) ||
-        r.role.toLowerCase().includes(query)
-      );
-
-      const tbody = document.getElementById("rosterTableBody");
-      if (filtered.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" class="empty-state">No registrants match your filter yet.</td></tr>';
-        return;
-      }
-
-      tbody.innerHTML = filtered.map(reg => `
-        <tr>
-          <td>
-            <strong>${escapeHtml(reg.memberName)}</strong>
-            ${reg.email ? `<div style="font-size:0.78rem;color:var(--muted)">${escapeHtml(reg.email)}</div>` : ""}
-          </td>
-          <td><code>${escapeHtml(reg.memberId)}</code></td>
-          <td>${escapeHtml(reg.role)}</td>
-          <td>
-            <span class="checkin-badge ${reg.checkedIn ? "badge-checked" : "badge-registered"}">
-              ${reg.checkedIn ? "Checked In" : "Registered"}
-            </span>
-          </td>
-          <td>
-            <button class="btn ${reg.checkedIn ? "btn-outline" : "btn-success"}" style="padding:0.3rem 0.6rem;font-size:0.78rem;" onclick="toggleCheckIn('${reg.id}')">
-              ${reg.checkedIn               ${reg.checkedIn ? ? "Undo Check-In" : "Check In"}
-            </button>
-            <button class="btn btn-danger-text" onclick="removeRegistration('${reg.id}')">Remove</button>
-          </td>
-        </tr>
-      `).join("");
-    }
-
-    document.getElementById("createEventForm").addEventListener("submit", (e) => {
-      e.preventDefault();
-      const title = document.getElementById("eventTitle").value.trim();
-      const date = document.getElementById("eventDate").value;
-      const venue = document.getElementById("eventVenue").value.trim();
-      const maxSlots = parseInt(document.getElementById("eventCapacity").value, 10);
-      const description = document.getElementById("eventDesc").value.trim();
-
-      if (!title || !date || !venue || isNaN(maxSlots) || maxSlots < 1) return;
-
-      const newEvent = {
-        id: "evt-" + Date.now(),
-        title,
-        date,
-        venue,
-        maxSlots,
-        description
-      };
-
-      state.events.unshift(newEvent);
-      selectedRosterEventId = newEvent.id;
-      saveState();
-      e.target.reset();
-      document.getElementById("eventCapacity").value = 25;
-      render();
-    });
-
-    function openSignupModal(eventId) {
-      const evt = state.events.find(e => e.id === eventId);
-      if (!evt) return;
-      document.getElementById("signupEventId").value = eventId;
-      document.getElementById("modalEventTitle").textContent = `Sign Up: ${evt.title}`;
-      const alertBox = document.getElementById("signupAlert");
-      alertBox.className = "alert";
-      alertBox.textContent = "";
-      document.getElementById("signupForm").reset();
-      document.getElementById("signupModal").classList.add("open");
-    }
-
-    function closeSignupModal() {
-      document.getElementById("signupModal").classList.remove("open");
-    }
-
-    document.getElementById("closeModalBtn").addEventListener("click", closeSignupModal);
-    document.getElementById("signupModal").addEventListener("click", (e) => {
-      if (e.target.id === "signupModal") closeSignupModal();
-    });
-
-    document.getElementById("signupForm").addEventListener("submit", (e) => {
-      e.preventDefault();
-      const eventId = document.getElementById("signupEventId").value;
-      const memberName = document.getElementById("memberName").value.trim();
-      const memberId = document.getElementById("memberId").value.trim();
-      const email = document.getElementById("memberEmail").value.trim();
-      const role = document.getElementById("memberRole").value;
-      const alertBox = document.getElementById("signupAlert");
-
-      const evt = state.events.find(ev => ev.id === eventId);
-      if (!evt) return;
-
-      const eventRegs = state.registrations.filter(r => r.eventId === eventId);
-
-      if (eventRegs.length >= evt.maxSlots) {
-        alertBox.className = "alert error";
-        alertBox.textContent = "Registration closed: This event has reached maximum capacity.";
-        return;
-      }
-
-      const isDuplicate = eventRegs.some(
-        r => r.memberId.toLowerCase() === memberId.toLowerCase()
-      );
-      if (isDuplicate) {
-        alertBox.className = "alert error";
-        alertBox.textContent = `Member ID "${memberId}" is already registered for this event.`;
-        return;
-      }
-
-      state.registrations.push({
-        id: "reg-" + Date.now(),
-        eventId,
-        memberName,
-        memberId,
-        email,
-        role,
-        checkedIn: false
+      // Filter pill click handler
+      document.getElementById("categoryFilterPills").addEventListener("click", function (e) {
+        const pill = e.target.closest("[data-filter]");
+        if (!pill) return;
+        activeFilter = pill.getAttribute("data-filter");
+        Array.from(document.querySelectorAll("#categoryFilterPills .filter-pill")).forEach(function (btn) {
+          btn.classList.toggle("active", btn === pill);
+        });
+        renderFeed();
       });
 
-      selectedRosterEventId = eventId;
-      saveState();
-      closeSignupModal();
-      render();
-    });
+      // Banner quick actions
+      document.getElementById("filterActiveAlertsBtn").addEventListener("click", function () {
+        activeFilter = "ACTIVE";
+        Array.from(document.querySelectorAll("#categoryFilterPills .filter-pill")).forEach(function (btn) {
+          btn.classList.toggle("active", btn.getAttribute("data-filter") === "ACTIVE");
+        });
+        renderFeed();
+      });
 
-    function selectRoster(eventId) {
-      selectedRosterEventId = eventId;
-      render();
-    }
+      document.getElementById("clearActiveAlertsBtn").addEventListener("click", function () {
+        advisories = advisories.map(function (item) {
+          return Object.assign({}, item, { resolved: true });
+        });
+        renderAll();
+        setComposerStatus("All active alerts marked as resolved.", false);
+      });
 
-    function toggleCheckIn(regId) {
-      const reg = state.registrations.find(r => r.id === regId);
-      if (!reg) return;
-      reg.checkedIn = !reg.checkedIn;
-      saveState();
-      render();
-    }
+      // Feed search & clear handlers
+      document.getElementById("searchFeedBtn").addEventListener("click", function () {
+        searchTerm = document.getElementById("feedSearchInput").value;
+        renderFeed();
+      });
 
-    function removeRegistration(regId) {
-      state.registrations = state.registrations.filter(r => r.id !== regId);
-      saveState();
-      render();
-    }
+      document.getElementById("feedSearchInput").addEventListener("input", function (e) {
+        searchTerm = e.target.value;
+        renderFeed();
+      });
 
-    function deleteEvent(eventId) {
-      if (!confirm("Delete this event and all its registrations?")) return;
-      state.events = state.events.filter(e => e.id !== eventId);
-      state.registrations = state.registrations.filter(r => r.eventId !== eventId);
-      if (selectedRosterEventId === eventId) {
-        selectedRosterEventId = (state.events[0] && state.events[0].id) || null;
-      }
-      saveState();
-      render();
-    }
+      document.getElementById("clearSearchFeedBtn").addEventListener("click", function () {
+        searchTerm = "";
+        document.getElementById("feedSearchInput").value = "";
+        renderFeed();
+      });
 
-    document.getElementById("rosterSearch").addEventListener("input", renderRoster);
+      // Feed item pin, resolve/acknowledge, and delete actions
+      document.getElementById("alertsFeedList").addEventListener("click", function (e) {
+        const pinBtn = e.target.closest("[data-pin-id]");
+        if (pinBtn) {
+          const id = pinBtn.getAttribute("data-pin-id");
+          const item = advisories.find(function (a) { return a.id === id; });
+          if (item) {
+            item.pinned = !item.pinned;
+            renderAll();
+          }
+          return;
+        }
 
-    document.getElementById("exportCsvBtn").addEventListener("click", () => {
-      const evt = state.events.find(e => e.id === selectedRosterEventId);
-      if (!evt) return;
-      const regs = state.registrations.filter(r => r.eventId === evt.id);
+        const resolveBtn = e.target.closest("[data-resolve-id]");
+        if (resolveBtn) {
+          const id = resolveBtn.getAttribute("data-resolve-id");
+          const item = advisories.find(function (a) { return a.id === id; });
+          if (item) {
+            item.resolved = !item.resolved;
+            renderAll();
+          }
+          return;
+        }
 
-      const headers = ["Event Title", "Member Name", "Member ID", "Email/Contact", "Role", "Check-In Status"];
-      const rows = regs.map(r => [
-        evt.title,
-        r.memberName,
-        r.memberId,
-        r.email || "",
-        r.role,
-        r.checkedIn ? "Checked In" : "Registered"
-      ]);
+        const delBtn = e.target.closest("[data-delete-id]");
+        if (delBtn) {
+          const id = delBtn.getAttribute("data-delete-id");
+          advisories = advisories.filter(function (a) { return a.id !== id; });
+          renderAll();
+        }
+      });
 
-      const csvContent = [headers, ...rows]
-        .map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(","))
-        .join("\n");
+       // Reset sample advisories
+      document.getElementById("resetDemoBtn").addEventListener("click", function () {
+        advisories = JSON.parse(JSON.stringify(initialAdvisories));
+        activeFilter = "ALL";
+        searchTerm = "";
+        document.getElementById("feedSearchInput").value = "";
+        Array.from(document.querySelectorAll("#categoryFilterPills .filter-pill")).forEach(function (btn) {
+          btn.classList.toggle("active", btn.getAttribute("data-filter") === "ALL");
+        });
+        renderAll();
+        setComposerStatus("Restored default Medina College Ipil sample advisories.", false);
+      });
 
-      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      const slug = evt.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-      link.href = url;
-      link.download = `${slug || "event"}-attendance-roster.csv`;
-      link.click();
-      URL.revokeObjectURL(url);
-    });
+      // Logo fallback if ./medina-college-logo.png is absent
+      const logoImg = document.getElementById("mcLogoImg");
+      const logoFallback = document.getElementById("mcLogoFallback");
+      logoImg.addEventListener("error", function () {
+        logoImg.style.display = "none";
+        logoFallback.style.display = "grid";
+      });
 
-    document.getElementById("resetDemoBtn").addEventListener("click", () => {
-      state = cloneData(DEFAULT_DATA);
-      selectedRosterEventId = state.events[0].id;
-      saveState();
-      render();
-    });
-
-    render();
+      // Start live clock and initial render
+      updateClock();
+      setInterval(updateClock, 1000);
+      renderAll();
+    })();
   </script>
 </body>
 </html>
